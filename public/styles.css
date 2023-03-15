@@ -12,8 +12,9 @@ html{
 
 #navbar {
     display: flex;
-    border: 2px solid red;
+    /* border: 2px solid red; */
     width: 100%;
+    background-color: black;
     }
 
 #logo {
@@ -45,7 +46,7 @@ html{
 }
 
 #navbar ul li a:hover {
-    color: white;
+    color: black;
     background-color: rgb(194, 179, 157);
 }
 
@@ -56,7 +57,7 @@ html{
 }
 
 #signUp:hover {
-    color: white;
+    color: black;
     background-color: rgb(194, 179, 157);
     cursor: pointer;
 }
@@ -81,35 +82,50 @@ html{
 }
 
 #home {
-    border: 2px solid black;
+   
     display: flex;
     flex-direction: column;
     padding: 167px 273px;
-    position:relative;
+ position:relative; 
     flex-wrap: wrap;
-    position:relative;
-
+background-image: url("front_gate2.jpg") ;
+    background-attachment: inherit;
+    background-repeat: no-repeat;
+    background-position:center center;
 }
+
+
+
 
 #home h1 {
     text-align: center;
     font-size: 3.3rem;
+    font-weight: bold;
     
+}
 
+#home p{
+    font-weight: bold;
+    
 }
 
 #identify {
     display: flex;
-    border: 2px solid green;
+   
     height:130px;
+    background-color:rgb(177 178 235);
 }
 
 
-
 #about {
-    border: 2px solid orange;
+    
     position:relative;
     padding: 75px 25px 75px 50px;
+    background-image: url("about_us4.jpg") ;
+    background-attachment: inherit;
+    background-repeat: no-repeat;
+    background-position:center center;
+    color:white;
 }
 
 #about h2 {
@@ -121,7 +137,7 @@ html{
 }
 
 #contact {
-    border: 2px solid yellow;
+    border: 3px solid yellow;
     display: flex;
     flex-wrap: wrap;
     position:relative;
@@ -168,7 +184,7 @@ html{
     cursor: pointer;
 }
 #text{
-   
+   color:white;
     width: 50%;
     text-align: center;
     font-size: 4rem;
@@ -184,13 +200,27 @@ html{
     padding:2px 2px;
     
 }
+
+#contact::before{
+    position:absolute;
+    background-color:#FFBBBB;
+    height:442.2px;
+    width:100%;
+    z-index: -1;
+    opacity:0.8;
+}
+#contact{
+    background-color: #FFBBBB;
+}
 .Choose{
+    background-color:white;
     height:50%;
     margin:2px 382px;
     padding:2px 3px;
     border-radius: 20px;
     font-size: 2rem;
     margin-left: 2px;
+    
 }
 .Choose:hover{
     cursor:pointer;
@@ -199,12 +229,9 @@ html{
 a{
     text-decoration: none;
 }
-/* #navbar::before {
-    height: 100%;
-    width: 100%;
-    background-color:blue;
-    position:absolute;
-
-    opacity: 0.3;
-    
-}  */
+ 
+.Choose:hover{
+    cursor:pointer;
+    background-color: grey;
+    color:white;
+}
