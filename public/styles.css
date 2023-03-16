@@ -15,6 +15,8 @@ html{
     /* border: 2px solid red; */
     width: 100%;
     background-color: black;
+     position: fixed;
+     z-index: 9999;
     }
 
 #logo {
@@ -85,7 +87,7 @@ html{
    
     display: flex;
     flex-direction: column;
-    padding: 167px 273px;
+    padding: 215px 273px;
  position:relative; 
     flex-wrap: wrap;
 background-image: url("front_gate2.jpg") ;
@@ -228,6 +230,7 @@ background-image: url("front_gate2.jpg") ;
 }
 a{
     text-decoration: none;
+    color: white;
 }
  
 .Choose:hover{
