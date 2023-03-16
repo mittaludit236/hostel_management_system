@@ -1,14 +1,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const http=require("http");
 const app = express();
 const _=require("lodash");
 const mongoose=require("mongoose");
 app.set('view engine', 'ejs');
-
+mongoose.connect("mongodb+srv://mittaludit236:12345@cluster0.bqkcjhs.mongodb.net/?retryWrites=true&w=majority",{ useNewUrlParser: true });
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
-mongoose.connect("mongodb+srv://mittaludit236:12345@cluster0.bqkcjhs.mongodb.net/?retryWrites=true&w=majority",{ useNewUrlParser: true });
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -20,34 +20,14 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
-    minlength: 8
+    required: true
   },
   retype: {
     type: String,
-    required: true,
-    minlength: 8
-  }
-});
-const contactSchema = new mongoose.Schema({
-  name: {
-    type: String,
     required: true
-  },
-  email: {
-    type: String,
-    required: true
-  },
-  Phone_Number: {
-    type: Number,
-    required: true
-  },
-  Message: {
-    type: String
   }
 });
 const User=new mongoose.model("User",userSchema);
-const Contact=new mongoose.model("Contact",contactSchema);
 app.get("/",function(req,res){
     res.render("home");
   });
@@ -63,33 +43,34 @@ app.get("/signin_student",function(req,res){
 app.get("/success",function(req,res){
   res.render("success");
 });
-app.get("/failure",function(req,res){
-  res.render("failure");
+app.get("/failure_password",function(req,res){
+  res.render("failure",{ message: "Sorry Password and Confirm Password does not match" });
 });
-app.post("/",function(req,res){
-  const contact=new Contact({
-    name: req.body.name,
-    email: req.body.email,
-    Phone_Number: req.body.phone,
-    Message: req.body.message
-  });
-  contact.save();
-  res.redirect("/");
-})
+app.get("/failure_email",function(req,res){
+  res.render("failure",{ message: "You have already signed up with this email address!" });
+});
 app.post("/signup",function(req,res){
-  const newUser=new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    retype: req.body.password1
-  });
-  if(req.body.password == req.body.password1)
-  {
-  newUser.save();
-  res.redirect("/success");
+  const email=req.body.email;
+User.findOne({ email: email },function(err,user){
+  if(err) throw err;
+  if(user)
+  res.redirect("/failure_email");
+  else{
+    const newUser=new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      retype: req.body.password1
+    });
+    if(req.body.password == req.body.password1)
+    {
+    newUser.save();
+    res.redirect("/success");
+    }
+    else
+    res.redirect("/failure_password");
   }
-  else
-  res.redirect("/failure");
+  });
 });
 
 
