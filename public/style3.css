@@ -91,3 +91,6 @@ body {
     background-attachment: inherit;
     background-position: center center;
 }
+button:hover{
+    cursor: pointer;
+}

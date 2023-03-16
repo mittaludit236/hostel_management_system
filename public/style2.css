@@ -29,7 +29,10 @@
     top: 80px;
     width: 80px;
     height: 80px;
-    border: 2px solid purple;
+    /* border: 2px solid purple; */
+}
+.image img{
+    border-radius: 10px;
 }
 
 p {
@@ -89,4 +92,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: inherit;
     background-position: center center;
+}
+button:hover{
+    cursor: pointer;
 }
