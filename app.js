@@ -1,14 +1,20 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const session=require("express-session");
+const bcrypt=require("bcrypt");
+const saltRounds=10;
 const http=require("http");
 const app = express();
 const _=require("lodash");
 const mongoose=require("mongoose");
 app.set('view engine', 'ejs');
 mongoose.connect("mongodb+srv://mittaludit236:12345@cluster0.bqkcjhs.mongodb.net/?retryWrites=true&w=majority",{ useNewUrlParser: true });
+//mongoose.set("useCreateIndex",true);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -44,10 +50,10 @@ app.get("/success",function(req,res){
   res.render("success");
 });
 app.get("/failure_password",function(req,res){
-  res.render("failure",{ message: "Sorry Password and Confirm Password does not match" });
+  res.render("failure",{ message: "Sorry Password and Confirm Password does not match",sign: "Up",url: "/signup"});
 });
 app.get("/failure_email",function(req,res){
-  res.render("failure",{ message: "You have already signed up with this email address!" });
+  res.render("failure",{ message: "You have already signed up with this email address!",sign: "Up",url: "/signup"});
 });
 app.post("/signup",function(req,res){
   const email=req.body.email;
@@ -56,22 +62,42 @@ User.findOne({ email: email },function(err,user){
   if(user)
   res.redirect("/failure_email");
   else{
-    const newUser=new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      retype: req.body.password1
+    bcrypt.hash(req.body.password,saltRounds,function(err,hash){
+      const newUser=new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: hash,
+        retype: hash
+      });
+      if(req.body.password == req.body.password1)
+      {
+      newUser.save();
+      res.redirect("/success");
+      }
+      else
+      res.redirect("/failure_password");
     });
-    if(req.body.password == req.body.password1)
-    {
-    newUser.save();
-    res.redirect("/success");
-    }
-    else
-    res.redirect("/failure_password");
   }
   });
 });
+app.post("/signin_student",function(req,res){
+  User.findOne({email : req.body.username},function(err,user){
+      if(err)
+      console.log(err);
+      else
+      {
+          if(user){
+            bcrypt.compare(req.body.password,user.password,function(err,result){
+              if(result==true)
+              res.render("home");
+              else
+              res.render("failure",{message: "Username or Password may not be correct",sign: "In",url: "/signin_student"});
+            });
+          }
+      }
+  });
+});
+
 
 
 
