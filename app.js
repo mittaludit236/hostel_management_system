@@ -49,6 +49,24 @@ function requireAuthenticate(req,res,next){
   else
   res.redirect("/signin_student");
 }
+const contactSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  PhoneNumber: {
+    type: String,
+    required: true
+  },
+  message: {
+    type: String
+  }
+});
+const Contact=new mongoose.model("Contact",contactSchema);
 const User=new mongoose.model("User",userSchema);
 app.get("/",function(req,res){
     res.render("home");
@@ -63,7 +81,7 @@ app.get("/signin_student",function(req,res){
   res.render("signin_student");
 });
 app.get("/success",function(req,res){
-  res.render("success");
+  res.render("success",{message: "You have successfully signed up to our Hostel Management System"});
 });
 app.get("/failure_password",function(req,res){
   res.render("failure",{ message: "Sorry Password and Confirm Password does not match",sign: "Up",url: "/signup"});
@@ -73,7 +91,17 @@ app.get("/failure_email",function(req,res){
 });
 app.get("/query_page",requireAuthenticate,function(req,res){
   res.render("home");
-})
+});
+app.post("/",function(req,res){
+  const newContact=new Contact({
+    name: req.body.name,
+    email: req.body.email,
+    PhoneNumber: req.body.phone,
+    message: req.body.message
+  });
+  newContact.save();
+  res.render("success",{message: "Our Team will contact you shortly!"});
+});
 app.post("/signup",function(req,res){
   const email=req.body.email;
 User.findOne({ email: email },function(err,user){
