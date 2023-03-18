@@ -7,8 +7,11 @@ const bcrypt=require("bcrypt");
 const saltRounds=10;
 const http=require("http");
 const app = express();
+const crypto=require("crypto");
+const nodemailer = require('nodemailer');
 const _=require("lodash");
 const mongoose=require("mongoose");
+var token="";
 app.set('view engine', 'ejs');
 mongoose.connect("mongodb+srv://mittaludit236:12345@cluster0.bqkcjhs.mongodb.net/?retryWrites=true&w=majority",{ useNewUrlParser: true });
 //mongoose.set("useCreateIndex",true);
@@ -94,9 +97,84 @@ app.post("/signin_student",function(req,res){
               res.render("failure",{message: "Username or Password may not be correct",sign: "In",url: "/signin_student"});
             });
           }
+          else
+          res.render("failure",{message: "You have not yet Signed Up",sign: "In",url: "/signin_student"});
       }
   });
 });
+app.get("/forget",function(req,res){
+  res.render("forget");
+});
+app.post('/forget', function(req, res) {
+  const email = req.body.email;
+
+  User.findOne({ email: email }, (err, user) => {
+    if (err) {
+      res.status(500).send('Server error');
+    } else if (!user) {
+      res.status(404).send('User not found');
+    } else { 
+      token = crypto.randomBytes(20).toString('hex');
+      user.token=token;
+      user.save();
+          const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            requireTLS: true,
+            auth: {
+              user: 'mittaludit236@gmail.com',
+              pass: 'xqsspfcetbnaalug'
+            }
+          });
+          const mailOptions = {
+            from: 'mittaludit236@gmail.com',
+            to: email,
+            subject: 'Test email',
+            html: `<p>You are receiving this email because you (or someone else) has requested a password reset for your account.</p>
+            <p>Please click on the following link, or paste this into your browser to complete the process:</p>
+            <a href="http://localhost:3000/reset/${token}">Click on this</a>
+            <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>`
+          };
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+              res.send("Verification email sent!");
+            }
+          });
+    }
+  });
+});
+app.get('/reset/:token',function(req,res){
+  res.render("reset_password");
+});
+app.post('/reset/:token', (req, res) => {
+  console.log(token);
+  const password = req.body.password;
+
+  User.findOne({token: token}, (err, user) => {
+    if (err) {
+      res.status(500).send('Server error');
+    } else if (!user) {
+      res.status(404).send('Invalid Link');
+    } else {
+      bcrypt.hash(password,saltRounds,function(err,hash){
+        User.updateMany({ token: token }, { password: hash, retype: hash }); 
+      });
+      user.token = undefined;
+  user.save((err) => {
+    if (err) {
+      res.status(500).send('Server error');
+    } else {
+      res.send('Password updated');
+    }
+  });
+}
+  });
+});
+
 
 
 
