@@ -1,0 +1,191 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+html{
+scroll-behavior:smooth;}
+
+/* navbar css applied */
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+    position:fixed;
+    width:99%;
+    height: 72px;
+}
+
+.navbar a {
+    float: right;
+    font-size: 1.6rem;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.dropdown {
+    float: right;
+    overflow: hidden;
+}
+
+.dropdown .dropbtn {
+    font-size: 1.6rem;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+
+.navbar a:hover,
+.dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+.dropdown-content {
+
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    font-size: 1rem;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropbtn {
+    float: right;
+}
+
+.project {
+    color: white;
+    font-size: 1.6rem;
+    display: inline-block;
+    margin: 4px 40px;
+    padding: 0px 20px;
+}
+.compA{
+   font-size: 2rem;
+    margin:3px 8px;
+}
+
+/* compose area css applied */
+#compose-area {
+    border: 2px solid green;
+    display: flex;
+    flex-direction: column;
+    height: 430px;
+    width: 600px;
+    /* justify-content: center;*/
+    justify-content: center;
+    margin:120px 0px 30px 0px;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+h1 {
+    margin: auto;
+    font-size: 3.5rem;
+    text-decoration: underline;
+}
+
+#container {
+    border: 2px solid green;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    font-size: 2rem;
+
+}
+
+#tittle {
+    width: 561px;
+    height: 75px;
+}
+
+#message {
+    width: 588px;
+    height: 144px;
+}
+
+#button {
+    width: 140px;
+    height: 40px;
+    margin: auto;
+    border-radius: 15px;
+    font-size: 1.6rem;
+}
+
+textarea {
+    font-weight: bold;
+
+}
+
+/* queries section css applied */
+#queries {
+    border: 2px solid blueviolet;
+    width: 600px;
+    height: 270px;
+    padding: 10px 30px 30px 30px;
+    border-radius: 15px;
+}
+
+.holder,
+.tittle_holder,
+.cont {
+    border: 2px solid pink;
+}
+
+.cont {
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    width: 560px;
+}
+
+.cont button {
+    width: 40px;
+    height: 40px;
+    padding: 10px 3px;
+    margin: 5px 6px;
+}
+
+.cont input {
+    height: 30px;
+    width: 30px;
+    margin: 8px 10px;
+
+}
+
+#queries div {
+    margin: 10px 15px;
+    padding: 10px 8px;
+}
+
+#queries p {
+    border: 2px solid pink;
+    margin: 5px 15px;
+    padding: 5px 4px;
+}
