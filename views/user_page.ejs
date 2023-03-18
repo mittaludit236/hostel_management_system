@@ -1,0 +1,52 @@
+<%-include("partials/header4")-%>
+<div class="navbar">
+
+    <div class="dropdown">
+
+         <button class="dropbtn">name
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="myDropdown" class="dropdown-content">
+             <a href="#">e-mail</a>
+            <a href="#">log out</a>  
+        </div>
+    </div>
+    <a href="#compose-area" class="compA">+</a>
+    <div class="project"><a href="#">PANACEA</a></div>
+</div>
+
+<aside id="container">
+    <section id="compose-area">
+        <h1>COMPOSE</h1>
+        <div class="form-group">
+            <label for="tittle">Tittle: </label>
+            <br>
+            <textarea name="tittle" id="tittle" placeholder="tittle your querie" cols="20" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="message">Message: </label>
+            <br>
+            <textarea name="message" id="message" placeholder="explain your querie" cols="20" rows="5"></textarea>
+        </div>
+        <button id="button">Publish</button>
+
+    </section>
+
+    <section id="queries">
+        <div class="holder">
+            this is the place for the name of querie issuer and no of days before which he published
+        </div>
+        <div class="tittle_holder">this is the place for the tittle of the querie</div>
+        <p>this is the place where description of the querie will come u have to make it a little optimized by
+            providing it with a aread more button which when used will make the height of the contaier more broder
+            like we have discussed last night </p>
+        <div class="cont">
+            <button id="upvote">&uarr;</button>
+            <input type="number" value="no_of_upvote" id="up">
+            <button id="downvote">&darr;</button>
+
+        </div>
+    </section>
+</aside>
+</body>
+<%-include("partials/footer1")-%>
