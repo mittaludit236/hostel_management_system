@@ -17,7 +17,14 @@ mongoose.connect("mongodb+srv://mittaludit236:12345@cluster0.bqkcjhs.mongodb.net
 //mongoose.set("useCreateIndex",true);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
-
+app.use(session({
+  secret: 'hello myyy',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 360000 // 1 hour in milliseconds
+  }
+}));
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -36,6 +43,12 @@ const userSchema = new mongoose.Schema({
     required: true
   }
 });
+function requireAuthenticate(req,res,next){
+  if(req.session && req.session.userId)
+  next();
+  else
+  res.redirect("/signin_student");
+}
 const contactSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -75,6 +88,9 @@ app.get("/failure_password",function(req,res){
 });
 app.get("/failure_email",function(req,res){
   res.render("failure",{ message: "You have already signed up with this email address!",sign: "Up",url: "/signup"});
+});
+app.get("/query_page",requireAuthenticate,function(req,res){
+  res.render("home");
 });
 app.post("/",function(req,res){
   const newContact=new Contact({
@@ -120,7 +136,10 @@ app.post("/signin_student",function(req,res){
           if(user){
             bcrypt.compare(req.body.password,user.password,function(err,result){
               if(result==true)
-              res.render("home");
+              {
+              req.session.userId=user._id;
+              res.redirect("/query_page");
+              }
               else
               res.render("failure",{message: "Username or Password may not be correct",sign: "In",url: "/signin_student"});
             });
@@ -151,8 +170,8 @@ app.post('/forget', function(req, res) {
             secure: false,
             requireTLS: true,
             auth: {
-              user: 'mittaludit236@gmail.com',
-              pass: 'xqsspfcetbnaalug'
+              user: '',
+              pass: ''
             }
           });
           const mailOptions = {
