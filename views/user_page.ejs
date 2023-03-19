@@ -3,23 +3,24 @@
 
     <div class="dropdown">
 
-         <button class="dropbtn">name
+         <button class="dropbtn"> <%= name %>
             <i class="fa fa-caret-down"></i>
         </button>
         <div id="myDropdown" class="dropdown-content">
-             <a href="#">e-mail</a>
-            <a href="#">log out</a>  
+             <a href="#"> <%= email %></a>
+            <a href="/signin_student">log out</a>  
         </div>
     </div>
     <a href="#compose-area" class="compA">+</a>
-    <div class="project"><a href="#">PANACEA</a></div>
+    <div class="project"><a href="/">PANACEA</a></div>
 </div>
 
 <aside id="container">
     <section id="compose-area">
         <h1>COMPOSE</h1>
+        <form action="/query_page" method="post">
         <div class="form-group">
-            <label for="tittle">Tittle: </label>
+            <label for="tittle">Title: </label>
             <br>
             <textarea name="tittle" id="tittle" placeholder="tittle your querie" cols="20" rows="5"></textarea>
         </div>
@@ -29,24 +30,54 @@
             <textarea name="message" id="message" placeholder="explain your querie" cols="20" rows="5"></textarea>
         </div>
         <button id="button">Publish</button>
-
+        </form>
     </section>
-
+    <% for(var i=0;i<posts.length;i++){ %>
     <section id="queries">
         <div class="holder">
-            this is the place for the name of querie issuer and no of days before which he published
+            Published by <%= posts[i].name %> on <%= posts[i].date %>
         </div>
-        <div class="tittle_holder">this is the place for the tittle of the querie</div>
-        <p>this is the place where description of the querie will come u have to make it a little optimized by
-            providing it with a aread more button which when used will make the height of the contaier more broder
-            like we have discussed last night </p>
+        <div class="tittle_holder"> <%= posts[i].title %> </div>
+        <p> <%= posts[i].content %> </p>
         <div class="cont">
-            <button id="upvote">&uarr;</button>
-            <input type="number" value="no_of_upvote" id="up">
-            <button id="downvote">&darr;</button>
+            <button id="upvote" data-id="<%= postId %>">&uarr;</button>
+            <p> <%= posts[i].votes %> </p>
+            <button id="downvote" data-id="<%= postId %>">&darr;</button>
 
         </div>
     </section>
+    <% } %>
 </aside>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   $(document).on('click', '#upvote', function() {
+  const postId = $(this).data('id');
+  $.ajax({
+    type: 'POST',
+    url: '/upvote',
+    data: { postId: postId },
+    success: function(data) {
+      $('.post[data-id="' + postId + '"] .votes').text(data.votes);
+    },
+    error: function() {
+      alert('Error upvoting post!');
+    }
+  });
+});
+$(document).on('click', '#downvote', function() {
+    const postId = $(this).data('id');
+  $.ajax({
+    type: 'POST',
+    url: '/downvote',
+    data: { postId: postId },
+    success: function(data) {
+      $('.post[data-id="' + postId + '"] .votes').text(data.votes);
+    },
+    error: function() {
+      alert('Error downvoting post!');
+    }
+  });
+});
+</script>
 <%-include("partials/footer1")-%>
