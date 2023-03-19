@@ -231,7 +231,7 @@ app.post('/downvote', bodyParser.json(), function(req, res){
       }
     } else {
       // creating  new vote
-      const vote = new Vote1({
+      const vote = new Vote({
         user: userId,
         post: postId,
         vote: "downvote"
