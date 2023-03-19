@@ -1,15 +1,19 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Bree Serif', serif;
+
 }
-html{
-scroll-behavior:smooth;}
+
+html {
+    scroll-behavior: smooth;
+}
 
 /* navbar css applied */
 .navbar {
     overflow: hidden;
-    background-color: #333;
-    position:fixed;
-    width:99%;
+    background-color: #636627ba;
+    z-index: 1;
+    position: fixed;
+    width: 99%;
     height: 72px;
 }
 
@@ -82,34 +86,46 @@ scroll-behavior:smooth;}
     display: inline-block;
     margin: 4px 40px;
     padding: 0px 20px;
+    font-family: 'Gabriola', sans-serif;   
 }
-.compA{
-   font-size: 2rem;
-    margin:3px 8px;
+
+.compA {
+    font-size: 2rem;
+    margin: 3px 8px;
 }
 
 /* compose area css applied */
 #compose-area {
-    border: 2px solid green;
     display: flex;
     flex-direction: column;
     height: 430px;
     width: 600px;
     /* justify-content: center;*/
     justify-content: center;
-    margin:120px 0px 30px 0px;
+    margin: 100px 0px 30px 0px;
     padding: 30px;
     border-radius: 15px;
+    background-color: #191a1df2;
+    color:white;
+    /* position:relative; */
 }
 
 h1 {
     margin: auto;
     font-size: 3.5rem;
     text-decoration: underline;
+   
 }
 
 #container {
-    border: 2px solid green;
+    background-image: url("user_page3.jpg");
+     perspective: 20px; 
+    background-repeat: 3;
+    background-position: center center;
+    background-attachment: inherit;
+    position: relative;
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -136,26 +152,46 @@ label {
     margin: auto;
     border-radius: 15px;
     font-size: 1.6rem;
+    cursor: pointer;
 }
 
 textarea {
     font-weight: bold;
+    background-color: #393e46;
+    color:white;
 
+}
+#button{
+    font-weight: bold;
+    background-color: #393e46;
+    color:white;
 }
 
 /* queries section css applied */
 #queries {
-    border: 2px solid blueviolet;
+    
     width: 600px;
     height: 270px;
     padding: 10px 30px 30px 30px;
+    margin-bottom:25px;
     border-radius: 15px;
+    background-color: #191a1df2;
+    color:white;
+    /* position:relative; */
+}
+.upvote .downvote{
+    font-size:1.6rem;
+    font-weight: bold;
+
 }
 
 .holder,
 .tittle_holder,
 .cont {
-    border: 2px solid pink;
+    
+    background-color: #393e46;
+    color:white;
+
 }
 
 .cont {
@@ -181,11 +217,32 @@ textarea {
 
 #queries div {
     margin: 10px 15px;
-    padding: 10px 8px;
+    padding: 0px 8px;
 }
 
 #queries p {
-    border: 2px solid pink;
+    
     margin: 5px 15px;
     padding: 5px 4px;
+    background-color: #393e46;
+    color:white;
+
+}
+.holder{
+height:40px;
+}
+/* footer section css applied */
+.footer {
+    display: flex;
+    background-color:#636627ba;;
+
+    color: white;
+   
+    height: 26px;
+    width: 100%;
+    
+    padding: 5px 0px;
+    align-items: center;
+    font-size: 1.3rem;
+    justify-content: center;
 }
