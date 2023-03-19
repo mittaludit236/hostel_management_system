@@ -79,6 +79,7 @@ const contactSchema = new mongoose.Schema({
     type: String
   }
 });
+//postSchema for posts i.e. queries
 const postSchema=new mongoose.Schema({
   title: { type: String },
   content: { type: String },
@@ -86,6 +87,7 @@ const postSchema=new mongoose.Schema({
   name: { type: String },
   date: { type: String }
 });
+//voteSchema for votes for upvote downvote
 const voteSchema=new mongoose.Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -98,7 +100,6 @@ const voteSchema=new mongoose.Schema({
   vote: { type: String }
 });
 const Vote = mongoose.model('Vote', voteSchema);
-const Vote1 = mongoose.model('Vote', voteSchema);
 const Post=new mongoose.model("Post",postSchema);
 //making a new mongoose model(collection) for contacts
 const Contact=new mongoose.model("Contact",contactSchema);
@@ -128,7 +129,7 @@ app.get("/failure_email",function(req,res){
 app.get("/query_page",requireAuthenticate,function(req,res){
   res.render("user_page",{ posts: posts ,name: nm, email: ema, postId: postId});
 });
-app.post("/query_page",function(req,res){
+app.post("/query_page",function(req,res){ //taking queries and sending to user_page.ejs
   User.findOne({email: ema},function(err,user){
     if(err)
     console.log(err);
@@ -136,6 +137,7 @@ app.post("/query_page",function(req,res){
     res.send("User not found");
     else
     {
+      //saving post to database 
       const post=new Post({
         title: req.body.tittle,
         content: req.body.message,
@@ -145,24 +147,24 @@ app.post("/query_page",function(req,res){
     });
     posts.push(post);
     post.save();
-    postId=post._id;
+    postId=post._id; //unique
     res.redirect("/query_page");
   }
   
   });
 
 });
-app.post('/upvote', bodyParser.json(), (req, res) => {
-  const postId = req.body.postId;
-  Vote.findOne({ user: userId, post: postId }, function(err, existingVote) {
+app.post('/upvote', bodyParser.json(), function(req, res){
+  const postId = req.body.postId; //unique
+  Vote.findOne({ user: userId, post: postId }, function(err, existingVote) { //finding if he had aleady upvoted
     if (err) {
       console.log(err);
     } else if (existingVote) {
-      if(existingVote.vote=="downvote")
+      if(existingVote.vote=="downvote") //if it is downvoted then upvote it increase votes by 2
       {
-        existingVote.vote="upvote";
+        existingVote.vote="upvote"; //making it upvote
         existingVote.save();
-        Post.findByIdAndUpdate(postId, { $inc: { votes: 2 } }, { new: true }, (err, post) => {
+        Post.findByIdAndUpdate(postId, { $inc: { votes: 2 } }, { new: true }, function(err, post){
           if (err) {
             console.error(err);
             res.sendStatus(500);
@@ -177,21 +179,21 @@ app.post('/upvote', bodyParser.json(), (req, res) => {
           //res.redirect("/query_page");
       }
     } else {
-      // Create a new vote
+      // creating new vote
       const vote = new Vote({
         user: userId,
         post: postId,
         vote: "upvote"
       });
       vote.save();
-      Post.findByIdAndUpdate(postId, { $inc: { votes: 1 } }, { new: true }, (err, post) => {
+      Post.findByIdAndUpdate(postId, { $inc: { votes: 1 } }, { new: true }, function(err, post){
         if (err) {
           console.error(err);
           res.sendStatus(500);
           return;
         }
         for(var i=0;i<posts.length;i++)
-        {
+        { //updating in posts
           if(posts[i].title==post.title && posts[i].content==post.content)
           posts[i].votes++;
         }
@@ -202,14 +204,14 @@ app.post('/upvote', bodyParser.json(), (req, res) => {
   });
  
 });
-app.post('/downvote', bodyParser.json(), (req, res) => {
+app.post('/downvote', bodyParser.json(), function(req, res){
   const postId = req.body.postId;
   
-  Vote.findOne({ user: userId, post: postId }, function(err, existingVote) {
+  Vote.findOne({ user: userId, post: postId }, function(err, existingVote) { //finding if he had aleady downvoted
     if (err) {
       console.log(err);
     } else if (existingVote) {
-      if(existingVote.vote=="upvote")
+      if(existingVote.vote=="upvote") //if it is upvoted then upvote it decrease votes by 2
       {
         existingVote.vote="downvote";
         existingVote.save();
@@ -220,7 +222,7 @@ app.post('/downvote', bodyParser.json(), (req, res) => {
             return;
           }
           for(var i=0;i<posts.length;i++)
-          {
+          { //updating in posts
             if(posts[i].title==post.title && posts[i].content==post.content)
             posts[i].votes-=2;
           }
@@ -228,7 +230,7 @@ app.post('/downvote', bodyParser.json(), (req, res) => {
           //res.redirect("/query_page");
       }
     } else {
-      // Create a new vote
+      // creating  new vote
       const vote = new Vote1({
         user: userId,
         post: postId,
@@ -338,7 +340,7 @@ app.post('/forget', function(req, res) { //recieving the email address to wich t
               pass: ''
             }
           });
-          const mailOptions = {
+          const mailOptions = { //mail sending
             from: '',
             to: email,
             subject: 'Test email',
