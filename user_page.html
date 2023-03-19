@@ -1,2 +1,328 @@
-   
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USER_PAGE(MNNIT|SVBH OFFICIALS)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style4.css">
+    <link href="https://fonts.cdnfonts.com/css/gabriola" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet">
+
+</head>
+<style>
+    body {
+        font-family: 'Bree Serif', serif;
+
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* navbar css applied */
+    .navbar {
+        overflow: hidden;
+        background-color: #636627ba;
+
+        position: fixed;
+        width: 99%;
+        height: 72px;
+    }
+
+    .navbar a {
+        float: right;
+        font-size: 1.6rem;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    .dropdown {
+        float: right;
+        overflow: hidden;
+    }
+
+    .dropdown .dropbtn {
+        font-size: 1.6rem;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 14px 16px;
+        background-color: inherit;
+        font-family: inherit;
+        margin: 0;
+    }
+
+    .navbar a:hover,
+    .dropdown:hover .dropbtn {
+        background-color: red;
+    }
+
+    .dropdown-content {
+
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    .dropdown-content a {
+        float: none;
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+        font-size: 1rem;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropbtn {
+        float: right;
+    }
+
+    .project {
+        color: white;
+        font-size: 1.6rem;
+        display: inline-block;
+        margin: 4px 40px;
+        padding: 0px 20px;
+        font-family: 'Gabriola', sans-serif;   
+    }
+
+    .compA {
+        font-size: 2rem;
+        margin: 3px 8px;
+    }
+
+    /* compose area css applied */
+    #compose-area {
+        display: flex;
+        flex-direction: column;
+        height: 430px;
+        width: 600px;
+        /* justify-content: center;*/
+        justify-content: center;
+        margin: 100px 0px 30px 0px;
+        padding: 30px;
+        border-radius: 15px;
+        background-color: #191a1df2;
+        color:white;
+        /* position:relative; */
+    }
+
+    h1 {
+        margin: auto;
+        font-size: 3.5rem;
+        text-decoration: underline;
+       
+    }
+
+    #container {
+        background-image: url("user_page3.jpg");
+         perspective: 20px; 
+        background-repeat: 3;
+        background-position: center center;
+        background-attachment: inherit;
+        position: relative;
+        z-index: -1;
+        height: 100%;
+        width: 100%;
+       
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    label {
+        font-size: 2rem;
+
+    }
+
+    #tittle {
+        width: 561px;
+        height: 75px;
+    }
+
+    #message {
+        width: 588px;
+        height: 144px;
+    }
+
+    #button {
+        width: 140px;
+        height: 40px;
+        margin: auto;
+        border-radius: 15px;
+        font-size: 1.6rem;
+    }
+
+    textarea {
+        font-weight: bold;
+        background-color: #393e46;
+        color:white;
+
+    }
+    #button{
+        font-weight: bold;
+        background-color: #393e46;
+        color:white;
+    }
+
+    /* queries section css applied */
+    #queries {
+        
+        width: 600px;
+        height: 270px;
+        padding: 10px 30px 30px 30px;
+        margin-bottom:25px;
+        border-radius: 15px;
+        background-color: #191a1df2;
+        color:white;
+        /* position:relative; */
+    }
+    .upvote .downvote{
+        font-size:1.6rem;
+        font-weight: bold;
+
+    }
+
+    .holder,
+    .tittle_holder,
+    .cont {
+        
+        background-color: #393e46;
+        color:white;
+
+    }
+
+    .cont {
+        display: flex;
+        justify-content: center;
+        height: 50px;
+        width: 560px;
+    }
+
+    .cont button {
+        width: 40px;
+        height: 40px;
+        padding: 10px 3px;
+        margin: 5px 6px;
+    }
+
+    .cont input {
+        height: 30px;
+        width: 30px;
+        margin: 8px 10px;
+
+    }
+
+    #queries div {
+        margin: 10px 15px;
+        padding: 0px 8px;
+    }
+
+    #queries p {
+        
+        margin: 5px 15px;
+        padding: 5px 4px;
+        background-color: #393e46;
+        color:white;
+
+    }
+.holder{
+    height:40px;
+}
+    /* footer section css applied */
+    .footer {
+        display: flex;
+        background-color:#636627ba;;
+
+        color: white;
+       
+        height: 26px;
+        width: 100%;
+        
+        padding: 5px 0px;
+        align-items: center;
+        font-size: 1.3rem;
+        justify-content: center;
+    }
+    
+</style>
+
+<body>
+    <div class="navbar">
+
+        <div class="dropdown">
+
+            <button class="dropbtn">NAME
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div id="myDropdown" class="dropdown-content">
+                <a href="#">e-mail</a>
+                <a href="#">log out</a>
+            </div>
+        </div>
+        <a href="#compose-area" class="compA">+</a>
+        <div class="project"><a href="#">PANACEA</a></div>
+    </div>
+
+    <aside id="container">
+        <section id="compose-area">
+            <h1>COMPOSE</h1>
+            <div class="form-group">
+                <label for="tittle">Tittle: </label>
+                <br>
+                <textarea name="tittle" id="tittle" placeholder="tittle your querie" cols="20" rows="5"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="message">Message: </label>
+                <br>
+                <textarea name="message" id="message" placeholder="explain your querie" cols="20" rows="5"></textarea>
+            </div>
+            <button id="button">Publish</button>
+
+        </section>
+
+
+        <section id="queries">
+            <div class="holder">
+                this is the place for the name of querie issuer and no of days before which he published
+            </div>
+            <div class="tittle_holder">this is the place for the tittle of the querie</div>
+            <p>this is the place where description of the querie will come u have to make it a little optimized by
+                providing it with a aread more button which when used will make the height of the contaier more broder
+                like we have discussed last night </p>
+            <div class="cont">
+                <button id="upvote">&uarr;</button>
+                <input type="number" value="no_of_upvote" id="up">
+                <button id="downvote">&darr;</button>
+
+            </div>
+        </section>
+    </aside>
+
+    <footer>
+        <div class="footer">
+            Made with ❤️ by Team DCU (Design Center Of Universe).
+        </div>
+
+    </footer>
+</body>
+
 </html>
