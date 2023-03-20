@@ -36,6 +36,14 @@ app.use(session({
   }
 })); //making a session for sign in through express-session
 //user schema for storingg user signup details in database
+app.use(session({
+  secret: 'hellojkdsbvnfg myyy',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 3600000 // 1 hour in milliseconds
+  }
+}));
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -61,12 +69,12 @@ function requireAuthenticate(req,res,next){
   else
   res.redirect("/signin_student");
 }
-// function requireAuthenticate1(req,res,next){
-//   if(req.session && req.session.userId)
-//   next();
-//   else
-//   res.redirect("/signin_admin");
-// }
+function requireAuthenticate1(req,res,next){
+  if(req.session && req.session.userId)
+  next();
+  else
+  res.redirect("/signin_admin");
+}
 //contact Schema for storing contact details
 const contactSchema = new mongoose.Schema({
   name: {
@@ -152,7 +160,7 @@ app.get("/query_page",requireAuthenticate,function(req,res){
     res.render("user_page",{ posts: results ,name: nm, email: ema});
   });
 });
-app.get("/admin_page",function(req,res){
+app.get("/admin_page",requireAuthenticate1,function(req,res){
   Post.find({},function(err,results){
     if(err)
     console.log(err);
@@ -368,12 +376,12 @@ app.post('/forget', function(req, res) { //recieving the email address to wich t
             secure: false,
             requireTLS: true,
             auth: { //user details from which mail to be sent
-              user: '',
-              pass: ''
+              user: 'mnnitsvbhofficial@gmail.com',
+              pass: 'wlhrglcgwjszjdxu'
             }
           });
           const mailOptions = { //mail sending
-            from: '',
+            from: 'mnnitsvbhofficial@gmail.com',
             to: email,
             subject: 'Test email',
             html: `<p>You are receiving this email because you (or someone else) has requested a password reset for your account.</p>
