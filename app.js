@@ -185,7 +185,6 @@ app.post("/query_page",function(req,res){ //taking queries and sending to user_p
   }
   
   });
-
 });
 app.post('/upvote', bodyParser.json(), function(req, res){
   const postId = req.body.postId; //unique
