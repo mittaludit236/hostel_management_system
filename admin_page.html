@@ -6,9 +6,182 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADMIN_PAGE(MNNIT|SVBH OFFICIAL)</title>
 </head>
-<style></style>
-<body>
+<style>
+    /* navbar css applied */
+    .navbar{
+        display:flex;
+        border: 2px solid black;
+        height:54px;
+        background-color: black;
+        color:white;
+
+    }
+    .block1{
+        display:flex;
+        float:right;
+        margin:0px 14px 0px 5px;
+       
+        
+        font-size:1rem;
+    }
+    li{
+        list-style: none;
+        
+    }
+    a{
+        text-decoration: none;
+    }
+    img+li{
+        margin-top:15px;
+    }
+    .project{
+        margin-right:1010px;
+        margin-left:70px;
+        padding:2px 6px;
+        margin-top:15px;
+        font-size:1.6rem;
+    }
+    .logout{
+        margin:15px 3px 5px 23px;
+        
+        font-size:1.6rem;
+    }
+    img{
+        border:2px solid red;
+        margin-right: 20px;
+    }
+
+/* css applied over the query/conainer section */
+    #queries {
     
+    width: 600px;
+    height: 210px;
+    padding: 10px 30px 30px 30px;
+    margin-top:25px;
+    margin-bottom:25px;
+    border-radius: 15px;
+    background-color: #191a1df2;
+    color:white;
+    /* position:relative; */
+}
+.upvote .downvote{
+    font-size:1.6rem;
+    font-weight: bold;
+
+}
+#container{
+    border:2px solid green;
+    display: flex;
+    justify-content:center; 
+    width:100%;
+    height:100%;
+
+}
+
+.holder,
+.tittle_holder,
+.cont {
+    
+    background-color: #393e46;
+    color:white;
+
+}
+
+.cont {
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    width: 560px;
+}
+.cont button {
+    width: 40px;
+    height: 40px;
+    padding: 10px 3px;
+    margin: 5px 6px;
+}
+
+.cont input {
+    height: 30px;
+    width: 30px;
+    margin: 8px 10px;
+
+}
+
+#queries div {
+    margin: 10px 15px;
+    padding: 0px 8px;
+}
+
+#queries p {
+    
+    margin: 5px 15px;
+    padding: 5px 4px;
+    background-color: #393e46;
+    color:white;
+
+}
+.holder{
+height:40px;
+}
+
+/* footer section css applied */
+ .footer {
+    display: flex;
+    background-color:#636627ba;;
+
+    color: white;
+   
+    height: 26px;
+    width: 100%;
+    
+    padding: 5px 0px;
+    align-items: center;
+    font-size: 1.3rem;
+    justify-content: center;
+} 
+
+
+
+</style>
+<body>
+    <nav class="navbar">
+       <a href="#" class="project">
+        PANACEA
+       </a>
+       <div class="block1">
+        <img src="" alt="IMAGE">
+        <li>NAME</li>
+        </div>
+        <li class="logout"><a href="#" >Log-Out</a></li>
+    </nav>
+
+    <aside id="container">
+        <section id="queries">
+            <div class="holder">
+            <input type="checkbox" id="check" name="checkb" value="cb">
+             this is the place for the name of querie issuer and no of days before which he published
+            </div>
+            <div class="tittle_holder">this is the place for the tittle of the querie</div>
+            <p>this is the place where description of the querie will come u have to make it a little optimized by
+                providing it with a aread more button which when used will make the height of the contaier more broder
+                like we have discussed last night </p>
+            <div class="cont">
+                <button id="upvote">&uarr;</button>
+                <input type="number" value="no_of_upvote" id="up">
+                <button id="downvote">&darr;</button>
+
+            </div>
+        </section>
+    </aside>
+
+     <footer>
+        <div class="footer">
+            Made with ❤️ by Team DCU (Design Center Of Universe).
+        </div>
+    
+    </footer>
+     
+
     
 </body>
 </html>
