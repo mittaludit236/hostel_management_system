@@ -55,7 +55,7 @@ p {
 
 .btn {
     position: absolute;
-    top: 435px;
+    top: 425px;
 }
 
 .button {
@@ -63,6 +63,7 @@ p {
     width: 184px;
     height: 33px;
     border-radius: 8px;
+    display:block;
 
 }
 
@@ -93,4 +94,9 @@ body {
 }
 button:hover{
     cursor: pointer;
+}
+.forget{
+    text-decoration: none ;
+    margin-left:25px;
+    color:black;
 }

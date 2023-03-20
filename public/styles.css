@@ -12,12 +12,15 @@ html{
 
 #navbar {
     display: flex;
-    /* border: 2px solid red; */
     width: 100%;
     background-color: black;
      position: fixed;
      z-index: 9999;
     }
+
+#home p{
+    font-size: 1.3rem;
+}
 
 #logo {
     padding: 5px;
@@ -87,10 +90,10 @@ html{
    
     display: flex;
     flex-direction: column;
-    padding: 215px 273px;
- position:relative; 
+    padding: 190px 273px;
+    position:relative; 
     flex-wrap: wrap;
-background-image: url("front_gate2.jpg") ;
+    background-image: url("front_gate2.jpg") ;
     background-attachment: inherit;
     background-repeat: no-repeat;
     background-position:center center;
@@ -101,8 +104,9 @@ background-image: url("front_gate2.jpg") ;
 
 #home h1 {
     text-align: center;
-    font-size: 3.3rem;
+    font-size: 4.2rem;
     font-weight: bold;
+    font-family: 'Gabriola', sans-serif;
     
 }
 
