@@ -32,7 +32,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    maxAge: 360000 // 1 hour in milliseconds
+    maxAge: 3600000 // 1 hour in milliseconds
   }
 })); //making a session for sign in through express-session
 //user schema for storingg user signup details in database
@@ -61,6 +61,12 @@ function requireAuthenticate(req,res,next){
   else
   res.redirect("/signin_student");
 }
+// function requireAuthenticate1(req,res,next){
+//   if(req.session && req.session.userId)
+//   next();
+//   else
+//   res.redirect("/signin_admin");
+// }
 //contact Schema for storing contact details
 const contactSchema = new mongoose.Schema({
   name: {
@@ -99,6 +105,18 @@ const voteSchema=new mongoose.Schema({
   },
   vote: { type: String }
 });
+const adminSchema=new mongoose.Schema({
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  name: {type: String }
+});
+const Admin=new mongoose.model("Admin",adminSchema);
+const admin=new Admin({
+  email: "admin@mnnit.ac.in",
+  name: "Admin",
+  password: "hello@123"
+});
+admin.save();
 const Vote = mongoose.model('Vote', voteSchema);
 const Post=new mongoose.model("Post",postSchema);
 //making a new mongoose model(collection) for contacts
@@ -127,8 +145,21 @@ app.get("/failure_email",function(req,res){
   res.render("failure",{ message: "You have already signed up with this email address!",sign: "Up",url: "/signup"});
 });
 app.get("/query_page",requireAuthenticate,function(req,res){
-  res.render("user_page",{ posts: posts ,name: nm, email: ema, postId: postId});
+   Post.find({},function(err,results){
+     if(err)
+     console.log(err);
+     else
+    res.render("user_page",{ posts: results ,name: nm, email: ema});
+  });
 });
+app.get("/admin_page",function(req,res){
+  Post.find({},function(err,results){
+    if(err)
+    console.log(err);
+    else
+   res.render("admin_page",{ posts: results ,name: admin.name, email: admin.email});
+ });
+   });
 app.post("/query_page",function(req,res){ //taking queries and sending to user_page.ejs
   User.findOne({email: ema},function(err,user){
     if(err)
@@ -137,6 +168,7 @@ app.post("/query_page",function(req,res){ //taking queries and sending to user_p
     res.send("User not found");
     else
     {
+
       //saving post to database 
       const post=new Post({
         title: req.body.tittle,
@@ -147,6 +179,7 @@ app.post("/query_page",function(req,res){ //taking queries and sending to user_p
     });
     posts.push(post);
     post.save();
+    console.log(posts.length);
     postId=post._id; //unique
     res.redirect("/query_page");
   }
@@ -176,7 +209,7 @@ app.post('/upvote', bodyParser.json(), function(req, res){
             posts[i].votes+=2;
           }
         });
-          //res.redirect("/query_page");
+          res.redirect("/query_page");
       }
     } else {
       // creating new vote
@@ -197,8 +230,8 @@ app.post('/upvote', bodyParser.json(), function(req, res){
           if(posts[i].title==post.title && posts[i].content==post.content)
           posts[i].votes++;
         }
-        //res.render("user_page",{ posts: posts ,name: nm, email: ema, postId: postId});
-        res.send({ votes: post.votes });
+        res.redirect("/query_page");
+        // res.send({ votes: post.votes });
       });
     }
   });
@@ -227,7 +260,7 @@ app.post('/downvote', bodyParser.json(), function(req, res){
             posts[i].votes-=2;
           }
         });
-          //res.redirect("/query_page");
+          res.redirect("/query_page");
       }
     } else {
       // creating  new vote
@@ -248,8 +281,8 @@ app.post('/downvote', bodyParser.json(), function(req, res){
           if(posts[i].title==post.title && posts[i].content==post.content)
           posts[i].votes--;
         }
-        //res.redirect("/query_page");
-        res.send({ votes: post.votes });
+        res.redirect("/query_page");
+       // res.send({ votes: post.votes });
       });
     }
   });
@@ -387,14 +420,38 @@ app.post('/reset/:token', (req, res) => { //post request through token
 }
   });
 });
-
-
-
-
-
-
-
-
+app.post("/signin_admin",function(req,res){
+  Admin.findOne({email : req.body.username},function(err,user){
+    console.log("hello");
+    if(err)
+    console.log(err);
+    else
+    {
+        if(user){
+            if(req.body.password==user.password)//checking the password if its correct
+            {
+            req.session.userId=user._id;
+            res.redirect("/admin_page");
+            }
+            else
+            res.render("failure",{message: "Username or Password may not be correct",sign: "In",url: "/signin_admin"});
+          }
+        else
+        res.render("failure",{message: "Username or Password may not be correct",sign: "In",url: "/signin_admin"});
+    }
+});
+});
+app.post("/delete",function(req,res){
+  const cId=req.body.checkbox;
+  Post.findByIdAndRemove(cId,function(err){
+    if(err)
+    console.log(err);
+    else
+    {
+      res.redirect("/admin_page");
+    }
+  })
+});
 app.listen(3000, function() { //generating server at port 3000
     console.log("Server started on port 3000");
   });

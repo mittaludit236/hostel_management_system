@@ -1,4 +1,5 @@
 <%-include("partials/header2")-%>
+<form action="/signin_admin" method="post">
 <div class="box">
     <div class="image">
         <img src="admin_sign1.jpeg" alt="unable to load">
@@ -6,12 +7,11 @@
     
     <p>Have an account?.</p>
     <div class="container">
-        <form action=""></form>
         <div class="form-group">
-            <input type="text" id="username" name="usern" placeholder="Enter Your Name">
+            <input type="text" id="username" name="username" placeholder="Enter Your Username">
         </div>
         <div class="form-group">
-            <input type="password" id="password" name="usern" placeholder="Enter Your Password">
+            <input type="password" id="password" name="password" placeholder="Enter Your Password">
         </div>
         
     </div>
@@ -26,5 +26,6 @@
         <button class="button">Sign-In</button>
     </div>
 </div>
+</form>
 <%-include("partials/footer")-%>
    
