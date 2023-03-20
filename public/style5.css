@@ -1,0 +1,132 @@
+ /* navbar css applied */
+ .navbar{
+    display:flex;
+    border: 2px solid black;
+    height:54px;
+    background-color: black;
+    color:white;
+
+}
+.block1{
+    display:flex;
+    float:right;
+    margin:0px 14px 0px 5px;
+   
+    
+    font-size:1rem;
+}
+li{
+    list-style: none;
+    
+}
+a{
+    text-decoration: none;
+}
+img+li{
+    margin-top:15px;
+}
+.project{
+    margin-right:1010px;
+    margin-left:70px;
+    padding:2px 6px;
+    margin-top:15px;
+    font-size:1.6rem;
+}
+.logout{
+    margin:15px 3px 5px 23px;
+    
+    font-size:1.6rem;
+}
+img{
+    border:2px solid red;
+    margin-right: 20px;
+}
+
+/* css applied over the query/conainer section */
+#queries {
+
+width: 600px;
+height: 210px;
+padding: 10px 30px 30px 30px;
+margin-top:25px;
+margin-bottom:25px;
+border-radius: 15px;
+background-color: #191a1df2;
+color:white;
+/* position:relative; */
+}
+.upvote .downvote{
+font-size:1.6rem;
+font-weight: bold;
+
+}
+#container{
+border:2px solid green;
+display: flex;
+justify-content:center; 
+width:100%;
+height:100%;
+
+}
+
+.holder,
+.tittle_holder,
+.cont {
+
+background-color: #393e46;
+color:white;
+
+}
+
+.cont {
+display: flex;
+justify-content: center;
+height: 50px;
+width: 560px;
+}
+.cont button {
+width: 40px;
+height: 40px;
+padding: 10px 3px;
+margin: 5px 6px;
+}
+
+.cont input {
+height: 30px;
+width: 30px;
+margin: 8px 10px;
+
+}
+
+#queries div {
+margin: 10px 15px;
+padding: 0px 8px;
+}
+
+#queries p {
+
+margin: 5px 15px;
+padding: 5px 4px;
+background-color: #393e46;
+color:white;
+
+}
+.holder{
+height:40px;
+}
+
+/* footer section css applied */
+.footer {
+display: flex;
+background-color:#636627ba;;
+
+color: white;
+
+height: 26px;
+width: 100%;
+
+padding: 5px 0px;
+align-items: center;
+font-size: 1.3rem;
+justify-content: center;
+} 
