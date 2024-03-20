@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const session=require("express-session");
 const bcrypt=require("bcrypt");
+const passport=require("passport");
+const User=require("./models/User");
+var userGd=require("./utilities/passport-setup");
 const saltRounds=10; //saltRounds for unique hash for each password even if repeated
 const http=require("http");
 const app = express();
@@ -14,6 +17,10 @@ const nodemailer = require('nodemailer');
 const _=require("lodash");
 const mongoose=require("mongoose");
 var token="";
+const cors = require('cors');
+app.use(cors());
+app.use(express.json()); // This is required to parse JSON bodies
+
 const posts=[];
 var ema;
 var nm;
@@ -22,13 +29,24 @@ var userId;
 const Schema = mongoose.Schema;
 app.set('view engine', 'ejs'); //setting the view engine to ejs
 //server database connection string linking
-mongoose.connect("mongodb+srv://mittaludit236:12345@cluster0.bqkcjhs.mongodb.net/?retryWrites=true&w=majority",{ useNewUrlParser: true }); 
+//
+app.use(passport.initialize());
+mongoose.connect("mongodb+srv://mittaludit768:"+process.env.MONGO_P+"@hostelmanagement.iky6mce.mongodb.net/?retryWrites=true&w=majority&appName=HostelManagement",{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then((x)=>{
+    console.log("Connected to Mongo");
+}).catch((err)=>{
+    console.log("error occured while mongo");
+    console.log(err);
+});
 //mongoose.set("useCreateIndex",true);
 //used to configure the module to parse incoming request bodies in the url encoded format
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
+app.use("/query_page",express.static("public"))
 app.use(session({
-  secret: 'hello myyy',
+  secret: process.env.SECRET1,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -37,31 +55,13 @@ app.use(session({
 })); //making a session for sign in through express-session
 //user schema for storingg user signup details in database
 app.use(session({
-  secret: 'hellojkdsbvnfg myyy',
+  secret: process.env.SECRET2,
   resave: false,
   saveUninitialized: true,
   cookie: {
     maxAge: 3600000 // 1 hour in milliseconds
   }
 }));
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  retype: {
-    type: String,
-    required: true
-  }
-});
 //authentication function for finding whether the user is logged in or not
 function requireAuthenticate(req,res,next){
   if(req.session && req.session.userId)
@@ -120,16 +120,15 @@ const adminSchema=new mongoose.Schema({
 });
 const Admin=new mongoose.model("Admin",adminSchema);
 const admin=new Admin({
-  email: "admin@mnnit.ac.in",
+  email: process.env.ADMIN_MAIL,
   name: "Admin",
-  password: "hello@123"
+  password: process.env.ADMIN_PASS,
 });
-admin.save();
+//admin.save();
 const Vote = mongoose.model('Vote', voteSchema);
 const Post=new mongoose.model("Post",postSchema);
 //making a new mongoose model(collection) for contacts
 const Contact=new mongoose.model("Contact",contactSchema);
-const User=new mongoose.model("User",userSchema);
 //get requests for our routes
 app.get("/",function(req,res){
     res.render("home");
@@ -152,12 +151,12 @@ app.get("/failure_password",function(req,res){
 app.get("/failure_email",function(req,res){
   res.render("failure",{ message: "You have already signed up with this email address!",sign: "Up",url: "/signup"});
 });
-app.get("/query_page",requireAuthenticate,function(req,res){
+app.get("/query_page/:id",requireAuthenticate,function(req,res){
    Post.find({},function(err,results){
      if(err)
      console.log(err);
      else
-    res.render("user_page",{ posts: results ,name: nm, email: ema});
+    res.render("user_page",{ posts: results ,name: nm, email: ema,id: req.params.id});
   });
 });
 app.get("/admin_page",requireAuthenticate1,function(req,res){
@@ -168,8 +167,9 @@ app.get("/admin_page",requireAuthenticate1,function(req,res){
    res.render("admin_page",{ posts: results ,name: admin.name, email: admin.email});
  });
    });
-app.post("/query_page",function(req,res){ //taking queries and sending to user_page.ejs
-  User.findOne({email: ema},function(err,user){
+app.post("/query_page/:id",function(req,res){ //taking queries and sending to user_page.ejs
+  console.log(ema);
+  User.findOne({_id: req.params.id},function(err,user){
     if(err)
     console.log(err);
     else if(!user)
@@ -189,13 +189,15 @@ app.post("/query_page",function(req,res){ //taking queries and sending to user_p
     post.save();
     console.log(posts.length);
     postId=post._id; //unique
-    res.redirect("/query_page");
+    const pp="/query_page/"+req.params.id;
+    res.redirect(pp);
   }
   
   });
 });
 app.post('/upvote', bodyParser.json(), function(req, res){
   const postId = req.body.postId; //unique
+  console.log(req.body);
   Vote.findOne({ user: userId, post: postId }, function(err, existingVote) { //finding if he had aleady upvoted
     if (err) {
       console.log(err);
@@ -267,7 +269,8 @@ app.post('/downvote', bodyParser.json(), function(req, res){
             posts[i].votes-=2;
           }
         });
-          res.redirect("/query_page");
+        res.json({ success: true, postId: postId });
+          //res.redirect("/query_page");
       }
     } else {
       // creating  new vote
@@ -288,7 +291,8 @@ app.post('/downvote', bodyParser.json(), function(req, res){
           if(posts[i].title==post.title && posts[i].content==post.content)
           posts[i].votes--;
         }
-        res.redirect("/query_page");
+        res.json({ success: true, postId: postId });
+        //res.redirect("/query_page");
        // res.send({ votes: post.votes });
       });
     }
@@ -306,22 +310,27 @@ app.post("/",function(req,res){ //storing the contact information in contacts mo
   res.render("success",{message: "Our Team will contact you shortly!"});
 });
 app.post("/signup",function(req,res){
+ 
   const email=req.body.email;
 User.findOne({ email: email },function(err,user){ //for checking if user already signed up with this email
   if(err) throw err;
   if(user)
   res.redirect("/failure_email");
   else{
+    console.log(req.body);
     bcrypt.hash(req.body.password,saltRounds,function(err,hash){ //making the password encrypted to store it in hashed format
+      if(err)
+      console.log(err);
       const newUser=new User({
         name: req.body.name,
         email: req.body.email,
         password: hash,
-        retype: hash
       });
-      if(req.body.password == req.body.password1)
+      //console.log();
+      if(req.body.password === req.body.password1)
       {
-      newUser.save();
+      //newUser.save();
+      User.create(newUser);
       res.redirect("/success");
       }
       else
@@ -344,7 +353,8 @@ app.post("/signin_student",function(req,res){
               if(result==true)
               {
               req.session.userId=user._id;
-              res.redirect("/query_page");
+              const p="/query_page/"+user._id;
+              res.redirect(p);
               }
               else
               res.render("failure",{message: "Username or Password may not be correct",sign: "In",url: "/signin_student"});
@@ -376,8 +386,8 @@ app.post('/forget', function(req, res) { //recieving the email address to wich t
             secure: false,
             requireTLS: true,
             auth: { //user details from which mail to be sent
-              user: 'mnnitsvbhofficial@gmail.com',
-              pass: 'wlhrglcgwjszjdxu'
+              user: process.env.SERVER_MAIL,
+              pass: process.env.SERVER_PASS,
             }
           });
           const mailOptions = { //mail sending
@@ -459,6 +469,23 @@ app.post("/delete",function(req,res){
     }
   })
 });
+app.get("/google",passport.authenticate("google",{scope:["profile","email"]}));
+app.get("/google/callback",passport.authenticate("google",{failureRedirect: "/failure_email"}),(req,res)=>{
+  // console.log(prof);
+  const tok=crypto.randomBytes(20).toString('hex');
+  req.session.userId=tok;
+  const gu="/query_page/"+req.user._id;
+  res.redirect(gu);
+});
+app.get("/logout",requireAuthenticate,(req,res)=>{
+  req.session.destroy((err)=>{
+    if (err) {
+      return res.status(500).send('Internal Server Error');
+    }
+    res.redirect("/");
+  })
+});
 app.listen(3000, function() { //generating server at port 3000
     console.log("Server started on port 3000");
   });
+
