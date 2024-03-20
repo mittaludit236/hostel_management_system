@@ -17,6 +17,7 @@ const nodemailer = require('nodemailer');
 const _=require("lodash");
 const mongoose=require("mongoose");
 var token="";
+const {getToken}=require("./utilities/help");
 const cors = require('cors');
 app.use(cors());
 app.use(express.json()); // This is required to parse JSON bodies
@@ -130,6 +131,21 @@ const Post=new mongoose.model("Post",postSchema);
 //making a new mongoose model(collection) for contacts
 const Contact=new mongoose.model("Contact",contactSchema);
 //get requests for our routes
+const ExtractJwt=require("passport-jwt").ExtractJwt;
+const JwtStrategy=require("passport-jwt").Strategy;
+let opts={};
+opts.jwtFromRequest=ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey="thisIsSupposedTobeSecret";
+passport.use( new JwtStrategy(opts,function(jwt_payload,done){
+    User.findOne({_id: jwt_payload.identifier},function(err,user){
+        if(err)
+        done(err,false);
+        if(user)
+        done(null,true);
+        else
+        done(null,false);
+    });
+}));
 app.get("/",function(req,res){
     res.render("home");
   });
@@ -331,6 +347,9 @@ User.findOne({ email: email },function(err,user){ //for checking if user already
       {
       //newUser.save();
       User.create(newUser);
+    const token=getToken(newUser.email,newUser);
+    const uReturn={...newUser.toJSON(),token};
+    delete uReturn.password;
       res.redirect("/success");
       }
       else
@@ -353,6 +372,9 @@ app.post("/signin_student",function(req,res){
               if(result==true)
               {
               req.session.userId=user._id;
+              const token=getToken(ema,user);
+              const uReturn={...user.toJSON(),token};
+              delete uReturn.password;
               const p="/query_page/"+user._id;
               res.redirect(p);
               }
