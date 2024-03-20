@@ -17,7 +17,8 @@
     </div>
 
     <span class="checkbox">
-        
+        <input type="checkbox" id="togglePassword">
+        <label for="check">Show Password</label>
         <input type="checkbox" id="check" name="checkbox" value="cb">
         <label for="check">Remember Me</label>
       
@@ -27,5 +28,22 @@
     </div>
 </div>
 </form>
+
+<script>
+    document.getElementById('togglePassword').addEventListener('change', function (e) {
+        // Get the password input
+        const passwordInput = document.getElementById('password');
+        
+        // Check if the checkbox is checked
+        // If checked, change the type to 'text' to show the password
+        // If not checked, change the type back to 'password' to hide the password
+        if (e.target.checked) {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password';
+        }
+    });
+    </script>
+    
 <%-include("partials/footer")-%>
    

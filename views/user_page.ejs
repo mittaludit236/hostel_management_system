@@ -8,7 +8,7 @@
         </button>
         <div id="myDropdown" class="dropdown-content">
              <a href="#"> <%= email %></a>
-            <a href="/signin_student">log out</a>  
+            <a href="/logout">log out</a>  
         </div>
     </div>
     <a href="#compose-area" class="compA">+</a>
@@ -18,7 +18,7 @@
 <aside id="container">
     <section id="compose-area">
         <h1>COMPOSE</h1>
-        <form action="/query_page" method="post">
+        <form action="/query_page/<%=id%>" method="post">
         <div class="form-group">
             <label for="tittle">Title: </label>
             <br>
@@ -33,7 +33,7 @@
         </form>
     </section>
     <% for(var i=0;i<posts.length;i++){ %>
-    <section id="queries">
+    <section id="queries" class="post-section" data-id="<%= posts[i]._id %>">
         <div class="holder">
             Published by <%= posts[i].name %> on <%= posts[i].date %>
         </div>
@@ -41,7 +41,7 @@
         <p> <%= posts[i].content %> </p>
         <div class="cont">
             <button id="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
-            <p> <%= posts[i].votes %> </p>
+            <p class="votes"> <%= posts[i].votes %> </p>
             <button id="downvote" data-id="<%= posts[i]._id %>">&darr;</button>
 
         </div>
@@ -56,9 +56,11 @@
   $.ajax({
     type: 'POST',
     url: '/upvote',
-    data: { postId: postId },
+    contentType: 'application/json', // Ensure server knows we're sending JSON
+    data: JSON.stringify({ postId: postId }), // Convert the JavaScript object to a JSON string
     success: function(data) {
-      $('.post[data-id="' + postId + '"] .votes').text(data.votes);
+     // $('.post[data-id="' + postId + '"] .votes').text(data.votes);
+     $('section[data-id="' + postId + '"] .votes').text(data.votes);
     },
     error: function() {
       alert('Error upvoting post!');
@@ -70,7 +72,8 @@ $(document).on('click', '#downvote', function() {
   $.ajax({
     type: 'POST',
     url: '/downvote',
-    data: { postId: postId },
+    contentType: 'application/json', // Ensure server knows we're sending JSON
+    data: JSON.stringify({ postId: postId }), // Convert the JavaScript object to a JSON string
     success: function(data) {
       $('.post[data-id="' + postId + '"] .votes').text(data.votes);
     },
