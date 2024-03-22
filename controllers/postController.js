@@ -133,4 +133,15 @@ exports.delete=(req,res)=>{
       res.redirect("/admin_page");
     }
   });
+};
+exports.getEditPost=async(req,res)=>{
+    const post = await Post.findById(req.params.postId);
+    res.json(post);
+};
+exports.postEdit=async(req,res)=>{
+    const { postId, userId } = req.params;
+    const { title, content } = req.body;
+    await Post.findByIdAndUpdate(postId, { title, content });
+    const u="/my_queries/"+userId;
+    res.redirect(u);
 }
