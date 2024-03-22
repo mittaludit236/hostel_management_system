@@ -3,7 +3,6 @@ const GoogleStrategy=require("passport-google-oauth2").Strategy;
 const User=require("../models/User");
 require("dotenv").config();
 var prof;
-var userGd;
 passport.serializeUser(function(user,done){
     done(null,user);
 });
@@ -38,4 +37,3 @@ passport.use(new GoogleStrategy({
   done(null, newUser);
 }
 }));
-module.exports=userGd;

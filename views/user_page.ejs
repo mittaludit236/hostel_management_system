@@ -55,7 +55,7 @@
   const postId = $(this).data('id');
   $.ajax({
     type: 'POST',
-    url: '/upvote',
+    url: '/upvote/<%=id%>',
     contentType: 'application/json', // Ensure server knows we're sending JSON
     data: JSON.stringify({ postId: postId }), // Convert the JavaScript object to a JSON string
     success: function(data) {
@@ -71,7 +71,7 @@ $(document).on('click', '#downvote', function() {
     const postId = $(this).data('id');
   $.ajax({
     type: 'POST',
-    url: '/downvote',
+    url: '/downvote/<%=id%>',
     contentType: 'application/json', // Ensure server knows we're sending JSON
     data: JSON.stringify({ postId: postId }), // Convert the JavaScript object to a JSON string
     success: function(data) {
