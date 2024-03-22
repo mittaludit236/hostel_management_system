@@ -35,7 +35,8 @@ app.use(passport.initialize());
 //used to configure the module to parse incoming request bodies in the url encoded format
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
-app.use("/query_page",express.static("public"))
+app.use("/query_page" ,express.static("public"))
+app.use("/my_queries" ,express.static("public"))
 app.use(session({
   secret: process.env.SECRET1,
   resave: false,
@@ -56,6 +57,31 @@ app.use(session({
 const {requireAuthenticate,requireAuthenticate1}=require("./middleware/authentication");
 app.use('/', require('./routes/authRoutes'));
 app.use('/', require('./routes/userRoutes'));
+
+
+app.delete('/delete-post/:postId', async (req, res) => {
+  const postId = req.params.postId;
+
+  try {
+      // Find the post by ID
+      const post = await Post.findById(postId);
+      if (!post) {
+          return res.status(404).json({ error: 'Post not found.' });
+      }
+
+      // Delete the post
+      await Post.findByIdAndDelete(postId);
+     
+      res.status(200).json({ message: 'Post deleted successfully.' });
+  } catch (error) {
+   
+      console.error('Error deleting post:', error);
+      // Send response with error message
+      res.status(500).json({ error: 'An error occurred while deleting the post.' });
+  }
+});
+
+
 app.use('/', require('./routes/postRoutes'));
 app.listen(3000, function() { //generating server at port 3000
     console.log("Server started on port 3000");

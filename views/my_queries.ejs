@@ -1,52 +1,40 @@
-<%-include("partials/header4")-%>
+<%-include("partials/header6")-%>
 <div class="navbar">
-
   <div class="dropdown">
-
       <button class="dropbtn"> <%= name %>
         <i class="fa fa-caret-down"></i>
       </button>
       <div id="myDropdown" class="dropdown-content">
-        <a  class="myqueries" href="/my_queries/<%=id %>">My Queries</a>
-
+          <a href="/myqueries">My Queries</a>
           <a href="#">Log Out</a>
       </div>
   </div>
   <a href="#compose-area" class="compA">+</a>
   <div class="project"><a href="#">PANACEA</a></div>
 </div>
-<aside id="container">
-    <section id="compose-area">
-        <h1>COMPOSE</h1>
-        <form action="/query_page/<%=id%>" method="post">
-        <div class="form-group">
-            <label for="tittle">Title: </label>
-            <br>
-            <textarea name="tittle" id="tittle" placeholder="tittle your querie" cols="20" rows="5"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="message">Message: </label>
-            <br>
-            <textarea name="message" id="message" placeholder="explain your querie" cols="20" rows="5"></textarea>
-        </div>
-        <button id="button">Publish</button>
-        </form>
-    </section>
-    <% for(var i=0;i<posts.length;i++){ %>
-    <section id="queries" class="post-section" data-id="<%= posts[i]._id %>">
-        <div class="holder">
-            Published by <%= posts[i].name %> on <%= posts[i].date %>
-        </div>
-        <div class="tittle_holder"> <%= posts[i].title %> </div>
-        <p> <%= posts[i].content %> </p>
-        <div class="cont">
-            <button id="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
-            <p class="votes"> <%= posts[i].votes %> </p>
-            <button id="downvote" data-id="<%= posts[i]._id %>">&darr;</button>
-
-        </div>
-    </section>
-    <% } %>
+<% for(var i=0; i<posts.length; i++) { %>
+  <section id="queries" class="post-section" data-id="<%= posts[i]._id %>">
+      <div class="dropdown top-right"> <!-- Add top-right class for positioning -->
+          <button class="dropbtn">
+              <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <div class="dropdown-content">
+              <a href="#">Edit Post</a>
+              <a href="#" class="delete-post">Delete Post</a>
+          </div>
+      </div>
+      <div class="holder">
+          Published by <%= posts[i].name %> on <%= posts[i].date %>
+      </div>
+      <div class="title_holder"> <%= posts[i].title %> </div>
+      <p> <%= posts[i].content %> </p>
+      <div class="cont"> <!-- Remove dropdown-container class -->
+          <button class="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
+          <p class="votes"> <%= posts[i].votes %> </p>
+          <button class="downvote" data-id="<%= posts[i]._id %>">&darr;</button>
+      </div>
+  </section>
+<% } %>
 </aside>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -81,6 +69,21 @@ $(document).on('click', '#downvote', function() {
       alert('Error downvoting post!');
     }
   });
+});
+
+$(document).on('click', '.delete-post', function() {
+    const postId = $(this).closest('.post-section').data('id');
+    $.ajax({
+        type: 'DELETE',
+        url: '/delete-post/' + postId,
+        success: function(data) {
+            // Remove the deleted post from the DOM
+            $(`.post-section[data-id="${postId}"]`).remove();
+        },
+        error: function() {
+            alert('Error deleting post!');
+        }
+    });
 });
 </script>
 <%-include("partials/footer1")-%>

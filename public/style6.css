@@ -13,9 +13,12 @@ html {
     background-color: #636627ba;
 
     position: fixed;
-    width: 99%;
+    width: 100%;
     height: 72px;
+    top: 0;
+
 }
+
 
 .navbar a {
     float: right;
@@ -76,9 +79,6 @@ html {
     display: block;
 }
 
-.dropbtn {
-    float: right;
-}
 
 .project {
     color: white;
@@ -91,87 +91,25 @@ html {
 
 .compA {
     font-size: 2rem;
-    margin: 3px 8px;
+    margin: 3px 8px; /* Adjust left margin */
 }
 
-/* compose area css applied */
-#compose-area {
-    display: flex;
-    flex-direction: column;
-    height: 430px;
-    width: 600px;
-    /* justify-content: center;*/
-    /* justify-content: center; */
-    margin: 100px 0px 30px 0px;
-    padding: 30px;
-    border-radius: 15px;
-    background-color: #191a1df2;
-    color:white;
-    /* position:relative; */
+.dropbtn {
+    float: right;
+    margin-left: 100px; /* Adjust right margin */
 }
 
-h1 {
-    margin: auto;
-    font-size: 3.5rem;
-    text-decoration: underline;
-   
-}
 
-#container {
-
-    height: 100%;
-    width: 100%;
-   
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-label {
-    font-size: 2rem;
-
-}
-
-#tittle {
-    width: 561px;
-    height: 75px;
-}
-
-#message {
-    width: 588px;
-    height: 144px;
-}
-
-#button {
-    width: 140px;
-    height: 40px;
-    margin: auto;
-    border-radius: 15px;
-    font-size: 1.6rem;
-}
-
-textarea {
-    font-weight: bold;
-    background-color: #393e46;
-    color:white;
-
-}
-#button{
-    font-weight: bold;
-    background-color: #393e46;
-    color:white;
-}
-
-/* queries section css applied */
 #queries {
     
     width: 600px;
     height: 270px;
-    padding: 10px 30px 30px 30px;
+    padding:10px 30px 0 30px;
     margin-bottom:25px;
     border-radius: 15px;
     background-color: #191a1df2;
     color:white;
+    margin: 100px auto 0;
     /* position:relative; */
 }
 .upvote .downvote{
@@ -229,15 +167,15 @@ height:40px;
 /* footer section css applied */
 .footer {
     display: flex;
-    background-color:#636627ba;;
-
+    background-color: #636627ba;
     color: white;
-   
     height: 26px;
     width: 100%;
-    
     padding: 5px 0px;
     align-items: center;
     font-size: 1.3rem;
     justify-content: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
