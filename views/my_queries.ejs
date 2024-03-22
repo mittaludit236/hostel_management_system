@@ -6,7 +6,7 @@
       </button>
       <div id="myDropdown" class="dropdown-content">
           <a href="/myqueries">My Queries</a>
-          <a href="#">Log Out</a>
+          <a href="/logout">Log Out</a>
       </div>
   </div>
   <a href="#compose-area" class="compA">+</a>
@@ -19,7 +19,7 @@
               <i class="fa fa-ellipsis-v"></i>
           </button>
           <div class="dropdown-content">
-              <a href="#">Edit Post</a>
+            <a href="#" class="edit-btn" data-post-id="<%= posts[i]._id %>">Edit</a>
               <a href="#" class="delete-post">Delete Post</a>
           </div>
       </div>
@@ -36,6 +36,11 @@
   </section>
 <% } %>
 </aside>
+<form id="editForm" style="display: none;" method="POST">
+  <input type="text" name="title" placeholder="Title">
+  <textarea name="content" placeholder="Content"></textarea>
+  <button type="submit">Save Changes</button>
+</form>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -84,6 +89,21 @@ $(document).on('click', '.delete-post', function() {
             alert('Error deleting post!');
         }
     });
+});
+$('.edit-btn').click(function() {
+    const postId = $(this).data('post-id');
+    const userId = '<%= id %>'; 
+    // Fetch the current post's content
+    fetch(`/posts/${postId}`)
+        .then(response => response.json())
+        .then(data => {
+            // Assume you have a form with an id of `editForm`
+            $('#editForm [name="title"]').val(data.title);
+            $('#editForm [name="content"]').val(data.content);
+            $('#editForm').attr('action', `/posts/edit/${postId}/${userId}`);
+            // Show the form, maybe as a modal
+            $('#editForm').show();
+        });
 });
 </script>
 <%-include("partials/footer1")-%>
