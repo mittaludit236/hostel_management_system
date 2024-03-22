@@ -9,4 +9,8 @@ router.get("/forget",userController.getForgetPage);
 router.post("/forget",userController.postForgetPage);
 router.get("/reset/:id",userController.getResetPage);
 router.post("/reset/:id",userController.postResetPage);
+router.get("/my_queries/:id", userController.getPersonalQueriesPage);
+
+
+
 module.exports = router;

@@ -20,6 +20,35 @@ exports.getQueryPage = (req, res) => {
          });
     });
 };
+exports.getPersonalQueriesPage = (req, res) => {
+  User.findOne({ _id: req.params.id }, function(err, user) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error occurred");
+      return;
+    }
+    if (!user) {
+      res.status(404).send("User not found");
+      return;
+    }
+
+    Post.find({ name: user.name }, function(err, results) {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Error occurred");
+        return;
+      }
+      res.render("my_queries", {
+        posts: results,
+        name: user.name,
+        email: user.email,
+        id: req.params.id
+      });
+    });
+  });
+};
+
+
 exports.getAdminPage = (req, res) => {
     Post.find({},function(err,results){
         if(err)
@@ -41,6 +70,7 @@ exports.postContact= (req,res) =>{
 exports.getForgetPage= (req,res) =>{
     res.render("forget");
 };
+
 exports.postForgetPage= (req,res)=>{
     const email = req.body.email;
 
