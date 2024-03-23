@@ -168,39 +168,7 @@ exports.delete=(req,res)=>{
   });
 
 }
-// exports.sendReminder = (req, res) => {
-//   const email = req.body.email;
-//   const date = req.body.date;
 
-//   const transporter = nodemailer.createTransport({
-//       host: 'smtp.gmail.com',
-//       port: 587,
-//       secure: false,
-//       requireTLS: true,
-//       auth: {
-//          user: process.env.SERVER_MAIL,
-      //    pass: process.env.NODE_M,
-//       }
-//   });
-
-//   const mailOptions = {
-//       from: email,
-//       to: process.env.SERVER_MAIL,
-//       subject: 'Test email',
-//       html: `<p>Hello Sir, This is to notify you that the query is still unresolved which was published on ${date}</p>`
-//   };
-
-//   transporter.sendMail(mailOptions, (error, info) => {
-//     if (error) {
-//         console.log('Error sending email:', error); // Log the error for debugging
-//         return res.status(500).json({ success: false, message: 'Error sending reminder email' });
-//     } else {
-//         console.log('Email sent: ' + info.response);
-//         return res.status(200).json({ success: true, message: 'Reminder email sent successfully' });
-//     }
-// });
-
-// };
 
 
 exports.sendReminder = async (req, res) => {
@@ -238,8 +206,6 @@ exports.sendReminder = async (req, res) => {
     console.log(err);
     res.status(500).json({ success: false, message: 'Error sending reminder email' });
   }
-}
-
 };
 exports.getEditPost=async(req,res)=>{
     const post = await Post.findById(req.params.postId);
