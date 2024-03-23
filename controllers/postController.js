@@ -11,7 +11,6 @@ const { getToken } = require('../utilities/help');
 const passport = require('passport');
 const session=require("express-session");
 const saltRounds = 10;
-const posts=[];
 var postId;
 var userId;
 exports.postQueryPage=(req,res)=>{
@@ -64,10 +63,7 @@ exports.postQueryPage=(req,res)=>{
             name: user.name,
             date: date.getDate()
         });
-        posts.push(post);
         post.save();
-        console.log(posts.length);
-        postId=post._id; //unique
         const pp="/query_page/"+req.params.id;
         res.redirect(pp);
       }
@@ -89,15 +85,12 @@ exports.upvote=(req,res)=>{
           if (err) {
             console.error(err);
             res.sendStatus(500);
-            return;
           }
-          for(var i=0;i<posts.length;i++)
-          {
-            if(posts[i].title==post.title && posts[i].content==post.content)
-            posts[i].votes+=2;
-          }
+          else
+          res.json({ success: true, postId: postId });
         });
-          res.redirect("/query_page");
+       
+          //res.redirect("/query_page");
       }
     } else {
       // creating new vote
@@ -111,14 +104,10 @@ exports.upvote=(req,res)=>{
         if (err) {
           console.error(err);
           res.sendStatus(500);
-          return;
         }
-        for(var i=0;i<posts.length;i++)
-        { //updating in posts
-          if(posts[i].title==post.title && posts[i].content==post.content)
-          posts[i].votes++;
-        }
-        res.redirect("/query_page");
+        else
+        res.json({ success: true, postId: postId });
+        //res.redirect("/query_page");
         // res.send({ votes: post.votes });
       });
     }
@@ -139,16 +128,12 @@ exports.downvote=(req,res)=>{
             if (err) {
               console.error(err);
               res.sendStatus(500);
-              return;
             }
-            for(var i=0;i<posts.length;i++)
-            { //updating in posts
-              if(posts[i].title==post.title && posts[i].content==post.content)
-              posts[i].votes-=2;
-            }
+            else
+            res.json({ success: true, postId: postId });
           });
-          res.json({ success: true, postId: postId });
-            //res.redirect("/query_page");
+         // res.redirect("/query_page");
+           // res.redirect("/query_page");
         }
       } else {
         // creating  new vote
@@ -162,13 +147,8 @@ exports.downvote=(req,res)=>{
           if (err) {
             console.error(err);
             res.sendStatus(500);
-            return;
           }
-          for(var i=0;i<posts.length;i++)
-          {
-            if(posts[i].title==post.title && posts[i].content==post.content)
-            posts[i].votes--;
-          }
+          else
           res.json({ success: true, postId: postId });
           //res.redirect("/query_page");
          // res.send({ votes: post.votes });
@@ -186,6 +166,7 @@ exports.delete=(req,res)=>{
       res.redirect("/admin_page");
     }
   });
+
 }
 // exports.sendReminder = (req, res) => {
 //   const email = req.body.email;
@@ -198,7 +179,7 @@ exports.delete=(req,res)=>{
 //       requireTLS: true,
 //       auth: {
 //          user: process.env.SERVER_MAIL,
-          pass: process.env.NODE_M,
+      //    pass: process.env.NODE_M,
 //       }
 //   });
 
@@ -258,3 +239,17 @@ exports.sendReminder = async (req, res) => {
     res.status(500).json({ success: false, message: 'Error sending reminder email' });
   }
 }
+
+};
+exports.getEditPost=async(req,res)=>{
+    const post = await Post.findById(req.params.postId);
+    res.json(post);
+};
+exports.postEdit=async(req,res)=>{
+    const { postId, userId } = req.params;
+    const { title, content } = req.body;
+    await Post.findByIdAndUpdate(postId, { title, content });
+    const u="/my_queries/"+userId;
+    res.redirect(u);
+}
+
