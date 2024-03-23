@@ -15,6 +15,39 @@ const posts=[];
 var postId;
 var userId;
 exports.postQueryPage=(req,res)=>{
+
+  console.log("hello");
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.SERVER_MAIL,
+        pass: process.env.NODE_M,
+      },
+      tls: {
+        rejectUnauthorized: false
+      },
+    });
+
+    // Send email and await the result
+    const info =  transporter.sendMail({
+      from: process.env.SERVER_MAIL,
+      to: "pandeysujal591@gmail.com",
+      subject: "New File Uploaded to Cloudinary",
+      html: `<p>Hello Sir, This is to notify you that the query is still unresolved which was published </p>`
+    });
+
+    console.log("Info : ", info);
+
+    // Send success response to the client
+  
+  } catch (err) {
+    console.log(err);
+
+
+}
     User.findOne({_id: req.params.id},function(err,user){
         if(err)
         console.log(err);
@@ -153,4 +186,75 @@ exports.delete=(req,res)=>{
       res.redirect("/admin_page");
     }
   });
+}
+// exports.sendReminder = (req, res) => {
+//   const email = req.body.email;
+//   const date = req.body.date;
+
+//   const transporter = nodemailer.createTransport({
+//       host: 'smtp.gmail.com',
+//       port: 587,
+//       secure: false,
+//       requireTLS: true,
+//       auth: {
+//          user: process.env.SERVER_MAIL,
+          pass: process.env.NODE_M,
+//       }
+//   });
+
+//   const mailOptions = {
+//       from: email,
+//       to: process.env.SERVER_MAIL,
+//       subject: 'Test email',
+//       html: `<p>Hello Sir, This is to notify you that the query is still unresolved which was published on ${date}</p>`
+//   };
+
+//   transporter.sendMail(mailOptions, (error, info) => {
+//     if (error) {
+//         console.log('Error sending email:', error); // Log the error for debugging
+//         return res.status(500).json({ success: false, message: 'Error sending reminder email' });
+//     } else {
+//         console.log('Email sent: ' + info.response);
+//         return res.status(200).json({ success: true, message: 'Reminder email sent successfully' });
+//     }
+// });
+
+// };
+
+
+exports.sendReminder = async (req, res) => {
+  const email = req.body.email;
+  const date = req.body.date;
+ console.log("hello");
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      post:587,
+      secure:false,
+
+      auth: {
+          user: process.env.SERVER_MAIL,
+          pass: process.env.NODE_M,
+      },
+      tls: {
+          rejectUnauthorized: false
+      },
+    
+  });
+  
+
+
+    const info = await transporter.sendMail({
+      from: process.env.SERVER_MAIL,
+      to: "pandeysujal591@gmail.com",
+      subject: "New File Uploaded to Cloudinary",
+      html:` <p>Hello Sir, This is to notify you that the query is still unresolved which was published on ${date}</p>`
+    });
+
+    console.log("Info : ", info);
+    res.status(200).json({ success: true, message: 'Reminder email sent successfully' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: 'Error sending reminder email' });
+  }
 }

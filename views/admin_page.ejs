@@ -10,24 +10,33 @@
      </div>
      <li class="logout"><a href="/signin_admin" >Log-Out</a></li>
  </nav>
+ 
 
- <aside id="container">
+ <div id="container">
     <% for(var i=0;i<posts.length;i++) { %>
         <form action="/delete" method="post">
-     <section id="queries">
-         <div class="holder">
-         <input type="checkbox" name="checkbox" value="<%= posts[i]._id %>" onChange="this.form.submit()">
-          Published by <%= posts[i].name %> on <%= posts[i].date %>
-         </div>
-         <div class="tittle_holder"> <%= posts[i].title %> </div>
-         <p> <%= posts[i].content %> </p>
-         <div class="cont">
-             <p>&uarr;</p>
-             <p> <%= posts[i].votes %> </p>
+            <div class="card" style="width:400px">
+                <input type="checkbox" name="checkbox" value="<%= posts[i]._id %>" onChange="this.form.submit()">
+                Published by <%= posts[i].name %> on <%= posts[i].date %>
+                <div class="card-body">
+                  <h4 class="card-title"><%= posts[i].title %></h4>
+                  <p class="card-text"> <%= posts[i].content %></p>
+              
+                  <div class="cont"> 
+                    <button class="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
+                    <p class="votes"> <%= posts[i].votes %> </p>
+       
+                </div>
+                </div>
 
          </div>
+       
+      
+      
      </section>
      </form>
      <%  } %>
- </aside>
+    </div>
  <%-include("partials/footer1")-%>
+
+ <scri

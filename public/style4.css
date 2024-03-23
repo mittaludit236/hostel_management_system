@@ -229,15 +229,15 @@ height:40px;
 /* footer section css applied */
 .footer {
     display: flex;
-    background-color:#636627ba;;
-
+    background-color: #636627ba;
     color: white;
-   
     height: 26px;
     width: 100%;
-    
     padding: 5px 0px;
     align-items: center;
     font-size: 1.3rem;
     justify-content: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
