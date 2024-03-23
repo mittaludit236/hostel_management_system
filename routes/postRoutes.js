@@ -6,6 +6,12 @@ router.post("/query_page/:id",postController.postQueryPage);
 router.post("/upvote/:id",postController.upvote);
 router.post("/downvote/:id",postController.downvote);
 router.post("/delete",postController.delete);
+
+
+router.post("/send_reminder/:id",postController.sendReminder);
+
+
 router.get('/posts/:postId',postController.getEditPost);
 router.post('/posts/edit/:postId/:userId',postController.postEdit);
+
 module.exports=router;
