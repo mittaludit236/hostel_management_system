@@ -29,7 +29,10 @@
             <br>
             <textarea name="message" id="message" placeholder="explain your querie" cols="20" rows="5"></textarea>
         </div>
-        <button id="button">Publish</button>
+  <!-- Add data-id attribute to the publish button to store postId -->
+<button class="publish">Publish</button>
+
+
         </form>
     </section>
     <% for(var i=0;i<posts.length;i++){ %>
@@ -49,7 +52,7 @@
     <% } %>
 </aside>
 </body>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
    $(document).on('click', '#upvote', function() {
   const postId = $(this).data('id');
@@ -82,5 +85,7 @@ $(document).on('click', '#downvote', function() {
     }
   });
 });
+
+
 </script>
 <%-include("partials/footer1")-%>

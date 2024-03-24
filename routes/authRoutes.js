@@ -18,9 +18,7 @@ router.get("/logout",requireAuthenticate,authController.logout);
 router.post("/signup",authController.postSignUpPage);
 router.post("/signin_student",authController.postSignInPage);
 router.post("/signin_admin",authController.postSignInAPage);
-// router.post('/signup', authController.postSignup);
-// router.get('/signin', authController.getSigninPage);
-// router.post('/signin', authController.postSignin);
+
 
 // Define other routes...
 

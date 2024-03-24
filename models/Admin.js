@@ -10,5 +10,8 @@ const admin=new Admin({
     name: "Admin",
     password: process.env.ADMIN_PASS,
 });
+
+
+
 module.exports={Admin,admin};
 //admin.save();

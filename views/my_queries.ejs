@@ -21,6 +21,7 @@
           <div class="dropdown-content">
             <a href="#" class="edit-btn" data-post-id="<%= posts[i]._id %>">Edit</a>
               <a href="#" class="delete-post">Delete Post</a>
+              <a href="#" class="send-reminder">Send a Reminder</a>
           </div>
       </div>
       <div class="holder">
@@ -87,6 +88,20 @@ $(document).on('click', '.delete-post', function() {
         },
         error: function() {
             alert('Error deleting post!');
+        }
+    });
+
+  });
+  $(document).on('click', '.send-reminder', function() {
+    const postId = $(this).closest('.post-section').data('id');
+    $.ajax({
+        type: 'POST',
+        url: '/send_reminder/' + postId, 
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function() {
+            alert('Error sending reminder email!');
         }
     });
 });

@@ -83,6 +83,7 @@ app.delete('/delete-post/:postId', async (req, res) => {
 
 const PORT=process.env.PORT||3000;
 
+
 app.use('/', require('./routes/postRoutes'));
 app.listen(PORT, function() { //generating server at port 3000
     console.log("Server started on port 3000");

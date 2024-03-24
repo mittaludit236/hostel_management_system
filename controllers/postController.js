@@ -14,6 +14,39 @@ const saltRounds = 10;
 var postId;
 var userId;
 exports.postQueryPage=(req,res)=>{
+
+  console.log("hello");
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.SERVER_MAIL,
+        pass: process.env.NODE_M,
+      },
+      tls: {
+        rejectUnauthorized: false
+      },
+    });
+
+    // Send email and await the result
+    const info =  transporter.sendMail({
+      from: process.env.SERVER_MAIL,
+      to: "pandeysujal591@gmail.com",
+      subject: "New File Uploaded to Cloudinary",
+      html: `<p>Hello Sir, This is to notify you that the query is still unresolved which was published </p>`
+    });
+
+    console.log("Info : ", info);
+
+    // Send success response to the client
+  
+  } catch (err) {
+    console.log(err);
+
+
+}
     User.findOne({_id: req.params.id},function(err,user){
         if(err)
         console.log(err);
@@ -133,6 +166,46 @@ exports.delete=(req,res)=>{
       res.redirect("/admin_page");
     }
   });
+
+}
+
+
+
+exports.sendReminder = async (req, res) => {
+  const email = req.body.email;
+  const date = req.body.date;
+ console.log("hello");
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      post:587,
+      secure:false,
+
+      auth: {
+          user: process.env.SERVER_MAIL,
+          pass: process.env.NODE_M,
+      },
+      tls: {
+          rejectUnauthorized: false
+      },
+    
+  });
+  
+
+
+    const info = await transporter.sendMail({
+      from: process.env.SERVER_MAIL,
+      to: "pandeysujal591@gmail.com",
+      subject: "New File Uploaded to Cloudinary",
+      html:` <p>Hello Sir, This is to notify you that the query is still unresolved which was published on ${date}</p>`
+    });
+
+    console.log("Info : ", info);
+    res.status(200).json({ success: true, message: 'Reminder email sent successfully' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: 'Error sending reminder email' });
+  }
 };
 exports.getEditPost=async(req,res)=>{
     const post = await Post.findById(req.params.postId);
@@ -145,3 +218,4 @@ exports.postEdit=async(req,res)=>{
     const u="/my_queries/"+userId;
     res.redirect(u);
 }
+

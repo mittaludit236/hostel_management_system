@@ -1,137 +1,184 @@
-/* navbar css applied */
-.navbar{
-    display:flex;
+
+body {
+    margin: 0; /* Reset default margin */
+    padding: 0; /* Reset default padding */
+    background-image: url("background2.jpg");
+    background-size: cover; /* Ensure the background image covers the entire body */
+    background-repeat: 3; /* Prevent the background image from repeating */
+    background-position: center; /* Center the background image */
+}
+
+
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     border: 2px solid black;
-    height:54px;
+    height: 54px;
     background-color: black;
-    color:white;
+    color: white;
+    width: 100%; /* Ensure navbar spans the full width */
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 20px;
 
 }
-.block1{
-    display:flex;
-    float:right;
-    margin:0px 14px 0px 5px;
-   
-    
-    font-size:1rem;
+
+
+/* Other CSS rules for navbar, cards, and footer remain the same */
+
+
+.block1 {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    margin-left: auto; /* Push block1 to the right */
 }
-li{
+
+.block1 img {
+    margin-right: 10px; /* Add some spacing between image and text */
+}
+
+.project {
+    font-size: 1.6rem;
+    margin-left: 10px;
+  
+}
+
+.logout {
+    font-size: 1.6rem;
+    margin-right: 20px;
+ /* Add some right margin */
+}
+
+
+.block1 {
+    display: flex;
+    float: right;
+    margin: 0px 14px 0px 5px;
+    font-size: 1rem;
+}
+
+li {
     list-style: none;
-    
 }
-a{
+
+a {
     text-decoration: none;
-}
-img+li{
-    margin-top:15px;
-}
-.project{
-    margin-right:1010px;
-    margin-left:70px;
-    padding:2px 6px;
-    margin-top:15px;
-    font-size:1.6rem;
-    color:white;
-}
-.logout{
-    margin:15px 3px 5px 23px;
-    color:white;
     
-    font-size:1.6rem;
 }
-img{
-    
+
+img+li {
+    margin-top: 15px;
+    box-sizing: border-box;
+}
+
+.project {
+    margin-right: 1010px;
+    margin-left: 70px;
+    padding: 2px 6px;
+    margin-top: 15px;
+    font-size: 1.6rem;
+    color: white;
+}
+
+.logout {
+    margin: 15px 3px 5px 23px;
+    color: white;
+    font-size: 1.6rem;
+}
+
+img {
     margin-right: 20px;
 }
 
-/* css applied over the query/conainer section */
-#queries {
+/* CSS applied over the card/container section */
 
-width: 600px;
-height: 210px;
-padding: 10px 30px 30px 30px;
-margin-top:25px;
-margin-bottom:25px;
-border-radius: 15px;
-background-color: #191a1df2;
-color:white;
-/* position:relative; */
-}
-.upvote .downvote{
-font-size:1.6rem;
-font-weight: bold;
-
-}
-#container{
-
-display: flex;
-justify-content:center; 
-width:1496px;
-height:100vh;
-background-image: url("background2.jpg");
-background-repeat: 3;
-background-position: center center;
-background-attachment: inherit;
+.card {
+    width: 400px;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
 }
 
-.holder,
-.tittle_holder,
+.card-body {
+    padding: 10px;
+}
+
+.card-title {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.card-text {
+    margin-bottom: 15px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
 .cont {
-
-background-color: #393e46;
-color:white;
-
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    color: #888;
 }
 
-.cont {
-display: flex;
-justify-content: center;
-height: 50px;
-width: 560px;
-}
-.cont button {
-width: 40px;
-height: 40px;
-padding: 10px 3px;
-margin: 5px 6px;
-}
-
-.cont input {
-height: 30px;
-width: 30px;
-margin: 8px 10px;
-
+.cont .upvote {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%; /* Make it round */
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-#queries div {
-margin: 10px 15px;
-padding: 0px 8px;
+.cont .upvote:hover {
+    background-color: #0056b3;
 }
 
-#queries p {
-
-margin: 5px 15px;
-padding: 5px 4px;
-background-color: #393e46;
-color:white;
-
-}
-.holder{
-height:40px;
+.cont .votes {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-left: 10px;
 }
 
-/* footer section css applied */
+
+
 .footer {
-display: flex;
-background-color:#636627ba;;
-
-color: white;
-
-height: 26px;
-width: 100%;
-
-padding: 5px 0px;
-align-items: center;
-font-size: 1.3rem;
-justify-content: center;
-} 
+    display: flex;
+    background-color: #636627ba;
+    color: white;
+    height: 26px;
+    width: 100%;
+    padding: 5px 0px;
+    align-items: center;
+    font-size: 1.3rem;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
