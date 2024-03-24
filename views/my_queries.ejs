@@ -30,9 +30,9 @@
       <div class="title_holder"> <%= posts[i].title %> </div>
       <p> <%= posts[i].content %> </p>
       <div class="cont"> <!-- Remove dropdown-container class -->
-          <button class="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
+          <button id="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
           <p class="votes"> <%= posts[i].votes %> </p>
-          <button class="downvote" data-id="<%= posts[i]._id %>">&darr;</button>
+          <button id="downvote" data-id="<%= posts[i]._id %>">&darr;</button>
       </div>
   </section>
 <% } %>
