@@ -9,18 +9,20 @@ body {
 }
 
 
-
 .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 2px solid black;
-    height: 54px;
-    background-color: black;
-    color: white;
-    width: 100%; /* Ensure navbar spans the full width */
-}
-
+    background-color: #333; /* Set background color */
+    padding: 15px;
+  }
+  .navbar-brand {
+    color: white; /* Set text color */
+    font-weight: bold; /* Make text bold */
+    font-size: 400px; /* Increase font size */
+  }
+  
+  .navbar-right li {
+    display: inline-block; /* Display list items inline */
+    margin-left: 10px; /* Add margin between list items */
+  }
 #container {
     display: flex;
     justify-content: center;
@@ -182,3 +184,59 @@ img {
     bottom: 0;
     left: 0;
 }
+/* Dropdown Button */
+.dropbtn {
+    background-color: #3498db;
+    color: white;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  /* Dropdown button on hover & focus */
+  .dropbtn:hover, .dropbtn:focus {
+    background-color: #2980b9;
+  }
+  
+  /* Dropdown container */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Dropdown Content (Hidden by Default) */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+  }
+  
+  /* Links inside the dropdown */
+  .dropdown-content a {
+    color: black;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  /* Change the background color of the dropdown button when the dropdown content is shown */
+  .dropdown:hover .dropbtn {
+    background-color: #2980b9;
+  }
+  

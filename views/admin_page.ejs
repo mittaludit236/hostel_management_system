@@ -1,42 +1,35 @@
 <%-include("partials/header5")-%>
-<nav class="navbar">
-    <a href="/" class="project">
-     PANACEA
-    </a>
-    <div class="block1">
-     <img src="admin_sign_nav.jpeg" alt="IMAGE">
-     <li> <%= name %> </li>
-     <li></li>
-     </div>
-     <li class="logout"><a href="/signin_admin" >Log-Out</a></li>
- </nav>
- 
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Panacea</a>
+      </div>
+  
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/users"><span class="glyphicon glyphicon-user"></span>My users</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=name%></a></li>
+        <li><a href="/signin_admin"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+      </ul>
+    </div>
+  </nav> 
 
- <div id="container">
-    <% for(var i=0;i<posts.length;i++) { %>
+<div id="container">
+    <% for(var i=0; i<posts.length; i++) { %>
         <form action="/delete" method="post">
             <div class="card" style="width:400px">
                 <input type="checkbox" name="checkbox" value="<%= posts[i]._id %>" onChange="this.form.submit()">
                 Published by <%= posts[i].name %> on <%= posts[i].date %>
                 <div class="card-body">
-                  <h4 class="card-title"><%= posts[i].title %></h4>
-                  <p class="card-text"> <%= posts[i].content %></p>
-              
-                  <div class="cont"> 
-                    <button class="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
-                    <p class="votes"> <%= posts[i].votes %> </p>
-       
+                    <h4 class="card-title"><%= posts[i].title %></h4>
+                    <p class="card-text"> <%= posts[i].content %></p>
+                    <div class="cont"> 
+                        <button class="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
+                        <p class="votes"> <%= posts[i].votes %> </p>
+                    </div>
                 </div>
-                </div>
+            </div>
+        </form>
+    <% } %>
+</div>
 
-         </div>
-       
-      
-      
-     </section>
-     </form>
-     <%  } %>
-    </div>
- <%-include("partials/footer1")-%>
-
- <scri
+<%-include("partials/footer1")-%>
