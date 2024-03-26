@@ -1,18 +1,8 @@
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const User = require('../models/User');
 const Post = require('../models/Post');
-const Contact = require('../models/Contact');
 const Vote = require('../models/Vote');
 const date=require("../utilities/date.js");
-const {Admin,admin}=require("../models/Admin");
-const { getToken } = require('../utilities/help');
-const passport = require('passport');
-const session=require("express-session");
-const saltRounds = 10;
-var postId;
-var userId;
 exports.postQueryPage=(req,res)=>{
 
   console.log("hello");
