@@ -54,7 +54,7 @@ app.use(session({
     maxAge: 3600000 // 1 hour in milliseconds
   }
 }));
-const {requireAuthenticate,requireAuthenticate1}=require("./middleware/authentication");
+const {requireAuthenticate,requireAu3thenticate1}=require("./middleware/authentication");
 app.use('/', require('./routes/authRoutes'));
 app.use('/', require('./routes/userRoutes'));
 
@@ -82,9 +82,22 @@ app.delete('/delete-post/:postId', async (req, res) => {
 });
 
 
+app.get('/users', function(req, res) {
+
+  User.find({}, function(err, users) {
+      if (err) {
+          console.error('Error fetching users:', err);
+         
+          return res.status(500).send('Internal Server Error');
+      }
+
+      res.render('users', { users: users });
+  });
+});
+
 
 app.use('/', require('./routes/postRoutes'));
-app.listen(3000, function() { //generating server at port 3000
+app.listen(3000, function() { 
     console.log("Server started on port 3000");
 });
 

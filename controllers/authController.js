@@ -2,11 +2,14 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const User = require('../models/User');
+const Post = require('../models/Post');
+
 
 const {Admin,admin}=require("../models/Admin");
 const { getToken } = require('../utilities/help');
 const passport = require('passport');
 const session=require("express-session");
+
 
 const saltRounds = 10;
 exports.getHomePage = (req, res) => {
@@ -21,6 +24,7 @@ exports.getSignInaPage = (req, res) => {
 exports.getSignInPage = (req, res) => {
     res.render("signin_student");
 };
+
 exports.getSuccessPage = (req, res) => {
     res.render("success",{message: "You have successfully signed up to our Hostel Management System"});
 };
@@ -86,44 +90,43 @@ exports.postSignUpPage = (req, res) => {
       });
 };
 exports.postSignInPage = (req, res) => {
-    //ema=req.body.username;
-  User.findOne({email : req.body.username},function(err,user){
-      if(err)
-      console.log(err);
-      else
-      {
-          if(user){
-            //nm=user.name;
-            userId=user._id;
-            bcrypt.compare(req.body.password,user.password,function(err,result){ //checking the password if its correct
-              if(result==true)
-              {
-              req.session.userId=user._id;
-              console.log(req.session);
-              const token=getToken(req.body.username,user);
-              const uReturn={...user.toJSON(),token};
-              delete uReturn.password;
-              const p="/query_page/"+user._id;
-              res.redirect(p);
+  User.findOne({ email: req.body.username }, function(err, user) {
+      if (err) {
+          console.log(err);
+          res.render("failure", { message: "An error occurred", sign: "In", url: "/signin_student" });
+      } else {
+          if (user) {
+              if (user.blocked) {
+                  return res.render("failure", { message: "Your account has been blocked", sign: "In", url: "/signin_student" });
               }
-              else
-              res.render("failure",{message: "Username or Password may not be correct",sign: "In",url: "/signin_student"});
-            });
+              bcrypt.compare(req.body.password, user.password, function(err, result) {
+                  if (result == true) {
+                      req.session.userId = user._id;
+                      console.log(req.session);
+                      const token = getToken(req.body.username, user);
+                      const uReturn = { ...user.toJSON(), token };
+                      delete uReturn.password;
+                      const p = "/query_page/" + user._id;
+                      res.redirect(p);
+                  } else {
+                      res.render("failure", { message: "Username or Password may not be correct", sign: "In", url: "/signin_student" });
+                  }
+              });
+          } else {
+              res.render("failure", { message: "You have not yet Signed Up", sign: "In", url: "/signin_student" });
           }
-          else
-          res.render("failure",{message: "You have not yet Signed Up",sign: "In",url: "/signin_student"});
       }
   });
 };
+
 exports.postSignInAPage = (req, res) => {
     Admin.findOne({email : req.body.username},function(err,user){
-        console.log("hello");
         if(err)
         console.log(err);
         else
         {
             if(user){
-                if(req.body.password==user.password)//checking the password if its correct
+                if(req.body.password==user.password)
                 {
                 req.session.userId=user._id;
                 res.redirect("/admin_page");
@@ -135,6 +138,39 @@ exports.postSignInAPage = (req, res) => {
             res.render("failure",{message: "Username or Password may not be correct",sign: "In",url: "/signin_admin"});
         }
     });
+};
+exports.getBlockedUsers = async (req, res) => {
+  const userEmail = req.body.email;
+  try {
+    // Delete posts associated with the user
+    await Post.deleteMany({ user: userEmail });
+
+    // Find the user by email
+    const user = await User.findOne({ email: userEmail });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Toggle the blocked state
+    user.blocked = !user.blocked;
+    await user.save();
+
+    // If the user is blocked, terminate the session
+    if (user.blocked) {
+      req.session.destroy((err) => {
+        if (err) {
+          console.error("Error destroying session:", err);
+          return res.status(500).json({ message: "Internal Server Error" });
+        }
+        console.log("Session terminated for blocked user");
+      });
+    }
+
+    res.status(200).json({ message: "User block state updated successfully", blocked: user.blocked });
+  } catch (error) {
+    console.error("Error updating user block state:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 
 
