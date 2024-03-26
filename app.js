@@ -54,7 +54,7 @@ app.use(session({
     maxAge: 3600000 // 1 hour in milliseconds
   }
 }));
-const {requireAuthenticate,requireAu3thenticate1}=require("./middleware/authentication");
+const {requireAuthenticate,requireAuthenticate1}=require("./middleware/authentication");
 app.use('/', require('./routes/authRoutes'));
 app.use('/', require('./routes/userRoutes'));
 
@@ -97,7 +97,7 @@ app.get('/users', function(req, res) {
 });
 
 
-
+app.use('/', require('./routes/postRoutes'));
 app.listen(3000, function() { 
 
     console.log("Server started on port 3000");

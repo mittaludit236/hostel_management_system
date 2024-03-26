@@ -140,13 +140,14 @@ exports.postSignInAPage = (req, res) => {
     });
 };
 exports.getBlockedUsers = async (req, res) => {
-  const userEmail = req.body.email;
+  const userId = req.body.id;
+  console.log(userId);
   try {
     // Delete posts associated with the user
-    await Post.deleteMany({ user: userEmail });
+    await Post.deleteMany({ uid: userId });
 
     // Find the user by email
-    const user = await User.findOne({ email: userEmail });
+    const user = await User.findOne({ _id: userId });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

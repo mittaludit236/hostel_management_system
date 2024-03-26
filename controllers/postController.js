@@ -31,7 +31,8 @@ exports.postQueryPage=(req,res)=>{
             content: req.body.message,
             votes: 0,
             name: user.name,
-            date: date.getDate()
+            date: date.getDate(),
+            uid: req.params.id,
         });
         post.save();
         try {

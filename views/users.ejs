@@ -17,7 +17,7 @@
         <% users.forEach(user => { %>
             <div class="user">
                <span class="username"><%= user.name %></span>
-                <button class="block-btn" data-email="<%= user.email %>">Block User</button>
+                <button class="block-btn" data-id="<%= user._id %>">Block User</button>
             </div>
         <% }); %>
     </div>
@@ -28,7 +28,7 @@
   const blockButtons = document.querySelectorAll('.block-btn');
   blockButtons.forEach(blockButton => {
       blockButton.addEventListener('click', function () {
-          const userEmail = blockButton.dataset.email;
+          const userId = blockButton.dataset.id;
           const isConnected = blockButton.classList.contains('connected');
           //console.log("HELLLLLL");
   
@@ -37,7 +37,7 @@
               headers: {
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({ email: userEmail })
+              body: JSON.stringify({ id: userId })
           })
           .then(response => {
               if (response.ok) {
