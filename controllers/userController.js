@@ -5,9 +5,6 @@ const User = require('../models/User');
 const Post = require('../models/Post');
 const Contact = require('../models/Contact');
 const {Admin,admin}=require("../models/Admin");
-const { getToken } = require('../utilities/help');
-const passport = require('passport');
-const session=require("express-session");
 const saltRounds = 10;
 var token="";
 exports.getQueryPage = (req, res) => {

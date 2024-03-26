@@ -18,8 +18,8 @@ router.get("/logout",requireAuthenticate,authController.logout);
 router.post("/signup",authController.postSignUpPage);
 router.post("/signin_student",authController.postSignInPage);
 router.post("/signin_admin",authController.postSignInAPage);
-
-router.post('/block_user', authController.getBlockedUsers);
+router.get('/users', requireAuthenticate1,authController.getBlockedUsers);
+router.post('/block_user',authController.postBlockedUsers);
 
 // Define other routes...
 

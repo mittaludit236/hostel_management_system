@@ -1,17 +1,11 @@
 const bcrypt = require('bcrypt');
-const crypto = require('crypto');
-const nodemailer = require('nodemailer');
 const User = require('../models/User');
 const Post = require('../models/Post');
-
-
 const {Admin,admin}=require("../models/Admin");
 const { getToken } = require('../utilities/help');
 const passport = require('passport');
-const session=require("express-session");
-
-
 const saltRounds = 10;
+const invalidateUserSessions=require("../middleware/session");
 exports.getHomePage = (req, res) => {
     res.render("home");
   };
@@ -139,7 +133,19 @@ exports.postSignInAPage = (req, res) => {
         }
     });
 };
-exports.getBlockedUsers = async (req, res) => {
+exports.getBlockedUsers=(req,res)=> {
+
+  User.find({}, function(err, users) {
+      if (err) {
+          console.error('Error fetching users:', err);
+         
+          return res.status(500).send('Internal Server Error');
+      }
+
+      res.render('users', { users: users });
+  });
+};
+exports.postBlockedUsers = async (req, res) => {
   const userId = req.body.id;
   console.log(userId);
   try {
@@ -158,13 +164,8 @@ exports.getBlockedUsers = async (req, res) => {
 
     // If the user is blocked, terminate the session
     if (user.blocked) {
-      req.session.destroy((err) => {
-        if (err) {
-          console.error("Error destroying session:", err);
-          return res.status(500).json({ message: "Internal Server Error" });
-        }
-        console.log("Session terminated for blocked user");
-      });
+      await invalidateUserSessions(user._id);
+      console.log("All sessions terminated for blocked user");
     }
 
     res.status(200).json({ message: "User block state updated successfully", blocked: user.blocked });

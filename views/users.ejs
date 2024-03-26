@@ -17,14 +17,16 @@
         <% users.forEach(user => { %>
             <div class="user">
                <span class="username"><%= user.name %></span>
-                <button class="block-btn" data-id="<%= user._id %>">
-                  <%= user.blocked? 'Unblock User':'Block User' %>     
-                </button>
+               <% if(user.blocked){ %>
+                <button class="block-btn<%= user.blocked ? ' connected' : '' %>" data-id="<%= user._id %>">Unblock User</button>
+                <% }else{ %>
+                <button class="block-btn<%= user.blocked ? ' connected' : '' %>" data-id="<%= user._id %>">Block User</button>
+                <% } %>
+
             </div>
         <% }); %>
     </div>
 </div>
-
 <script>
 
   const blockButtons = document.querySelectorAll('.block-btn');
@@ -49,12 +51,13 @@
           })
           .then(data => {
               // Update UI accordingly
-              if (isConnected) {
-                  blockButton.classList.remove('connected');
-                  blockButton.textContent = 'Block User';
-              } else {
+              console.log(data.blocked);
+              if (data.blocked) {
                   blockButton.classList.add('connected');
                   blockButton.textContent = 'Unblock User';
+              } else {
+                blockButton.classList.remove('connected');
+                blockButton.textContent = 'Block User';
               }
           })
           .catch(error => {

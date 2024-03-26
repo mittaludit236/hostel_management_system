@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const session=require("express-session");
 const bcrypt=require("bcrypt");
+const MongoStore = require('connect-mongo');
 const passport=require("passport");
 const User=require("./models/User");
 require("./utilities/passport-setup");
@@ -29,7 +30,9 @@ const posts=[];
 var postId;
 var userId;
 const Schema = mongoose.Schema;
+//const MongoStore = require('connect-mongo');
 app.set('view engine', 'ejs'); //setting the view engine to ejs
+require("./middleware/session");
 //server database connection string linking
 app.use(passport.initialize());
 //used to configure the module to parse incoming request bodies in the url encoded format
@@ -43,7 +46,8 @@ app.use(session({
   saveUninitialized: true,
   cookie: {
     maxAge: 3600000 // 1 hour in milliseconds
-  }
+  },
+  store: MongoStore.create({ mongoUrl: "mongodb+srv://mittaludit768:" + process.env.MONGO_P + "@hostelmanagement.iky6mce.mongodb.net/?retryWrites=true&w=majority&appName=HostelManagement" })
 })); //making a session for sign in through express-session
 //user schema for storingg user signup details in database
 app.use(session({
@@ -52,8 +56,10 @@ app.use(session({
   saveUninitialized: true,
   cookie: {
     maxAge: 3600000 // 1 hour in milliseconds
-  }
+  },
+  store: MongoStore.create({ mongoUrl: "mongodb+srv://mittaludit768:" + process.env.MONGO_P + "@hostelmanagement.iky6mce.mongodb.net/?retryWrites=true&w=majority&appName=HostelManagement" })
 }));
+const sessionStore = MongoStore.create({ mongoUrl: "mongodb+srv://mittaludit768:" + process.env.MONGO_P + "@hostelmanagement.iky6mce.mongodb.net/?retryWrites=true&w=majority&appName=HostelManagement" });
 const {requireAuthenticate,requireAuthenticate1}=require("./middleware/authentication");
 app.use('/', require('./routes/authRoutes'));
 app.use('/', require('./routes/userRoutes'));
@@ -82,24 +88,9 @@ app.delete('/delete-post/:postId', async (req, res) => {
 });
 
 const PORT=process.env.PORT||3000;
-
-app.get('/users', function(req, res) {
-
-  User.find({}, function(err, users) {
-      if (err) {
-          console.error('Error fetching users:', err);
-         
-          return res.status(500).send('Internal Server Error');
-      }
-
-      res.render('users', { users: users });
-  });
-});
-
-
 app.use('/', require('./routes/postRoutes'));
 app.listen(3000, function() { 
 
     console.log("Server started on port 3000");
 });
-
+module.exports=sessionStore;
