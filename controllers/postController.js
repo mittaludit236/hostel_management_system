@@ -170,9 +170,8 @@ exports.delete=(req,res)=>{
 
 
 exports.sendReminder = async (req, res) => {
-  const email = req.body.email;
-  const date = req.body.date;
- console.log("hello");
+
+
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -211,6 +210,61 @@ exports.sendReminder = async (req, res) => {
     res.status(500).json({ success: false, message: 'Error sending reminder email' });
   }
 };
+exports.getEditPost=async(req,res)=>{
+    const post = await Post.findById(req.params.postId);
+    res.json(post);
+};
+exports.postEdit=async(req,res)=>{
+    const { postId, userId } = req.params;
+    const { title, content } = req.body;
+    await Post.findByIdAndUpdate(postId, { title, content });
+    const u="/my_queries/"+userId;
+    res.redirect(u);
+}
+
+
+
+exports.ResolveMail = async (req, res) => {
+
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+          user: process.env.SERVER_MAIL,
+          pass: process.env.NODE_M,
+      },
+      tls: {
+          rejectUnauthorized: false
+      }
+    });
+  
+    const post=await Post.findById(req.params.id);
+  
+    const info = await transporter.sendMail({
+      from: 'admin@mnnit.ac.in',
+      to: 'pandeysujal591@gmail.com',
+      subject: "Query Status Update",
+      html: `
+      <div style="font-family: Arial, sans-serif; color: #333;">
+        <h2>Query Status Notification</h2>
+        <p>The query posted by <strong>${post.name}</strong> on <strong>${post.date}</strong> has been resolved.</p>
+        <p>Please click the button below to view the details of your query and validate from your side.</p>
+        <a href="http://localhost:3000/signin_admin" style="display: inline-block; background-color: #007bff; color: #ffffff; padding: 10px 20px; font-size: 16px; text-decoration: none; border-radius: 5px; margin-top: 20px;">Login to View Query</a>
+      </div>
+      `
+    });
+
+    console.log("Info : ", info);
+    res.status(200).json({ success: true, message: 'Reminder email sent successfully' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: 'Error sending reminder email' });
+  }
+};
+
 exports.getEditPost=async(req,res)=>{
     const post = await Post.findById(req.params.postId);
     res.json(post);

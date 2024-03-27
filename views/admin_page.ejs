@@ -26,10 +26,44 @@
                         <button class="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
                         <p class="votes"> <%= posts[i].votes %> </p>
                     </div>
+                    <button class="resolve-btn">Mark as Resolved</button>
+                    
                 </div>
             </div>
         </form>
     <% } %>
-</div>
+</div> 
+<script>
+  $(document).on('click', '.resolve-btn', function() {
+    const resolveButton = $(this);
+    const postId = resolveButton.closest('.card').find('input[type="checkbox"]').val();
+
+    // Change button text to "Waiting for Confirmation"
+    resolveButton.text('Waiting for Confirmation');
+    // Disable the button
+    resolveButton.prop('disabled', true);
+
+    // Enable the button after 10 minutes
+    setTimeout(function() {
+      resolveButton.text('Mark as Resolved');
+      resolveButton.prop('disabled', false);
+    }, 60000); // 10 minutes in milliseconds
+
+    // Send AJAX request to mark the post as resolved
+    $.ajax({
+      type: 'POST',
+      url: '/resolve-post/' + postId,
+      success: function(data) {
+        // Handle success response if needed
+        alert(data.message);
+      },
+      error: function() {
+        // Handle error response if needed
+        alert('Error marking post as resolved');
+      }
+    });
+  });
+</script>
+
 
 <%-include("partials/footer1")-%>
