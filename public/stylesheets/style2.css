@@ -13,16 +13,15 @@
 .box {
     display: flex;
     flex-direction: column;
-    /* border:2px solid black; */
+    border-radius: 20px;
+
+    background-color: rgb(229 224 224 / 42%);
     height: 429px;
     width: 440px;
     justify-content: center;
     align-items: center;
     margin: 70px 550px;
-    background-color: #d53a3abd;
-    border-radius: 20px;
-    box-shadow: 16px 15px 13px 5px black;
-
+    box-shadow: 42px 30px 20px 4px rgb(10, 10, 10);
 }
 
 .image {
@@ -30,7 +29,10 @@
     top: 80px;
     width: 80px;
     height: 80px;
-    /* border:2px solid purple; */
+    /* border: 2px solid purple; */
+}
+.image img{
+    border-radius: 10px;
 }
 
 p {
@@ -55,7 +57,7 @@ p {
 
 .btn {
     position: absolute;
-    top: 425px;
+    top: 435px;
 }
 
 .button {
@@ -63,13 +65,12 @@ p {
     width: 184px;
     height: 33px;
     border-radius: 8px;
-    display:block;
 
 }
 
 div input {
     padding: 8px 55px;
-    border-radius: 8px;
+    border-radius: 4px;
     margin: 2px;
     font-weight: bold;
 
@@ -84,7 +85,7 @@ div input {
 }
 
 body {
-    background-image: url("student_bg2.png");
+    background-image: url("../images/admin_bg.jpg");
     height: 100%;
     width: 100%;
     z-index: -1;
@@ -94,9 +95,4 @@ body {
 }
 button:hover{
     cursor: pointer;
-}
-.forget{
-    text-decoration: none ;
-    margin-left:25px;
-    color:black;
 }

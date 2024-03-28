@@ -2,7 +2,7 @@
 body {
     margin: 0; /* Reset default margin */
     padding: 0; /* Reset default padding */
-    background-image: url("background2.jpg");
+    background-image: url("../images/background2.jpg");
     background-size: cover; /* Ensure the background image covers the entire body */
     background-repeat: 3; /* Prevent the background image from repeating */
     background-position: center; /* Center the background image */

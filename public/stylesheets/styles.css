@@ -93,7 +93,7 @@ html{
     padding: 190px 273px;
     position:relative; 
     flex-wrap: wrap;
-    background-image: url("front_gate2.jpg") ;
+    background-image: url("../images/front_gate2.jpg") ;
     background-attachment: inherit;
     background-repeat: no-repeat;
     background-position:center center;
@@ -127,7 +127,7 @@ html{
     
     position:relative;
     padding: 75px 25px 75px 50px;
-    background-image: url("about_us4.jpg") ;
+    background-image: url("../images/about_us4.jpg") ;
     background-attachment: inherit;
     background-repeat: no-repeat;
     background-position:center center;
