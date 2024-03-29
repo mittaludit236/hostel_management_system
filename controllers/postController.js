@@ -15,7 +15,7 @@ exports.postQueryPage=(req,res)=>{
         else
         {
     
-          //saving post to database 
+  
           const post=new Post({
             user:user._id, //this is the user id given to post schema for post to remember which user posted this post
             title: req.body.tittle,
@@ -44,7 +44,6 @@ exports.postQueryPage=(req,res)=>{
             },
           });
       
-          // Send email and await the result
           const info =  transporter.sendMail({
             from: process.env.SERVER_MAIL,
             to: "pandeysujal591@gmail.com",
@@ -60,8 +59,7 @@ exports.postQueryPage=(req,res)=>{
           });
       
           console.log("Info : ", info);
-      
-          // Send success response to the client
+
         
         } catch (err) {
           console.log(err);
@@ -73,7 +71,7 @@ exports.postQueryPage=(req,res)=>{
       });
 };
 exports.upvote=(req,res)=>{
-    const postId = req.body.postId; //unique
+    const postId = req.body.postId;
   console.log(req.body);
   console.log("Hello12345");
   Vote.findOne({ user: req.params.id, post: postId }, function(err, existingVote) { //finding if he had aleady upvoted
@@ -228,49 +226,66 @@ exports.postEdit=async(req,res)=>{
 }
 
 
-
 exports.ResolveMail = async (req, res) => {
-
-
-  const post=await Post.findById(req.params.id);
-  const user = await User.findById(post.uid);
-  post.bdate=date.getDate();
-  post.save();
-  const userEmail = user.email;
   try {
+    const post = await Post.findById(req.params.id);
+    const user = await User.findById(post.uid);
+  
+    const userEmail = user.email;
+    const postId = req.params.id;
+
+
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+
+    user.notifications.push({
+      postId: postId,
+      message: 'The admin has resolved the query',
+  
+    });
+    await user.save();
+    
+
+    
+
+    // Send email notification to the user
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
       auth: {
-          user: process.env.SERVER_MAIL,
-          pass: process.env.NODE_M,
+        user: process.env.SERVER_MAIL,
+        pass: process.env.NODE_M,
       },
       tls: {
-          rejectUnauthorized: false
+        rejectUnauthorized: false
       }
     });
-  
-    const post=await Post.findById(req.params.id);
+
     const info = await transporter.sendMail({
       from: 'admin@mnnit.ac.in',
       to: userEmail,
       subject: "Query Status Update",
       html: `
-      <div style="font-family: Arial, sans-serif; color: #333;">
-        <h2>Query Status Notification</h2>
-        <p>The query posted by <strong>${post.name}</strong> on <strong>${post.date}</strong> has been resolved.</p>
-        <p>Please click the button below to view the details of your query and validate from your side .</p>
-        <a href="http://localhost:3000/signin_admin" style="display: inline-block; background-color: #007bff; color: #ffffff; padding: 10px 20px; font-size: 16px; text-decoration: none; border-radius: 5px; margin-top: 20px;">Login to View Query</a>
-      </div>
+        <div style="font-family: Arial, sans-serif; color: #333;">
+          <h2>Query Status Notification</h2>
+          <p>The query posted by <strong>${post.name}</strong> on <strong>${post.date}</strong> has been resolved.</p>
+          <p>Please click the button below to view the details of your query and validate from your side.</p>
+          <a href="http://localhost:3000/signin_admin" style="display: inline-block; background-color: #007bff; color: #ffffff; padding: 10px 20px; font-size: 16px; text-decoration: none; border-radius: 5px; margin-top: 20px;">Login to View Query</a>
+        </div>
       `
     });
 
     console.log("Info : ", info);
-    res.status(200).json({ success: true, message: 'Reminder email sent successfully' });
+    console.log("User notifications updated successfully");
+
+    res.status(200).json({ success: true, message: 'Email notification sent successfully' });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ success: false, message: 'Error sending reminder email' });
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Error sending email notification' });
   }
 };
 
@@ -286,21 +301,7 @@ exports.postEdit=async(req,res)=>{
     res.redirect(u);
 }
 
-exports.deletePostResolved= async(req,res) =>{
-  try {
-    // Find the post by ID and delete it
-    await Post.findByIdAndDelete(req.params.postId);
-    
-    // Decrement the notification count
-    // Assuming you have a function to decrement the count
-    await decrementNotificationCount(req.user.id); // Adjust this as per your actual implementation
-    
-    res.status(200).json({ message: "Post deleted successfully" });
-} catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
-}
-};
+
 
 exports.sendEmailToAdmin = async (req, res) => {
   const userId = req.params.id;
@@ -312,8 +313,7 @@ exports.sendEmailToAdmin = async (req, res) => {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
 
-    // Update the usercount
-    user.usercount = 0;
+
 
     // Save the updated user object
     await user.save();
@@ -354,3 +354,4 @@ exports.sendEmailToAdmin = async (req, res) => {
     res.status(500).json({ success: false, message: 'Error sending reminder email' });
   }
 };
+

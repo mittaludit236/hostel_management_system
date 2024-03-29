@@ -100,8 +100,7 @@ exports.postSignInPage = (req, res) => {
                       const token = getToken(req.body.username, user);
                       const uReturn = { ...user.toJSON(), token };
                       delete uReturn.password;
-                      const count = user.count;
-         
+                   
 
                       const p = "/query_page/" + user._id;
                       res.redirect(p);

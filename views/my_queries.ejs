@@ -58,7 +58,7 @@
     contentType: 'application/json', // Ensure server knows we're sending JSON
     data: JSON.stringify({ postId: postId }), // Convert the JavaScript object to a JSON string
     success: function(data) {
-     // $('.post[data-id="' + postId + '"] .votes').text(data.votes);
+
      $('section[data-id="' + postId + '"] .votes').text(data.votes);
     },
     error: function() {
