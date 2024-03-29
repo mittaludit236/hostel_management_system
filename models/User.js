@@ -22,11 +22,16 @@ const userSchema = new mongoose.Schema({
     type: Boolean,  
     default: false,
   },
-  count:{
-    type:Number,
-    default:0,
-  }
+  notifications: [{
+  
+    postId: {
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'Post' 
+    },
+    message: {
+      type: String
+    },
+  }]
 });
-
 
 module.exports = mongoose.model('User', userSchema);

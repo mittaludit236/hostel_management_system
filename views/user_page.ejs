@@ -1,163 +1,169 @@
 <%-include("partials/header4")-%>
 <div class="navbar">
-
   <div class="dropdown">
-
-      <button class="dropbtn"> <%= name %>
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div id="myDropdown" class="dropdown-content">
-        <a  class="myqueries" href="/my_queries/<%=id %>">My Queries</a>
-
-          <a href="/logout">Log Out</a>
-      </div>
+    <button class="dropbtn"> <%= name %>
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div id="myDropdown" class="dropdown-content">
+      <a  class="myqueries" href="/my_queries/<%=id %>">My Queries</a>
+      <a href="/logout">Log Out</a>
+    </div>
   </div>
   <div class="dropdown">
     <a href="#" class="dropbtm" onclick="toggleDropdown(event)">&#128276;
       <i class="fa fa-caret-down"></i>
     </a> 
- 
-<span class="notification-badge"><%= count %></span>
-
+    <span class="notification-badge" id="notificationBadge"><%= notifications.length %></span>
 
     <div id="myDropdown1" class="dropdown-content">
-     
+      <% if (notifications.length > 0) { %>
+        <% notifications.forEach(notification => { %>
+          <a href="#"><%= notification.message %></a>
+          <button class="showbutton" data-postid="<%= notification.postId %>"><i class="fas fa-check"></i> Show me</button>
+        <% }); %>
+      <% } else { %>
+        <p>No notifications</p>
+      <% } %>
     </div>
-</div>
+  </div>
   <div class="project"><a href="#">PANACEA</a></div>
 </div>
 <aside id="container">
-    <section id="compose-area">
-        <h1>COMPOSE</h1>
-        <form action="/query_page/<%=id%>" method="post">
-        <div class="form-group">
-            <label for="tittle">Title: </label>
-            <br>
-            <textarea name="tittle" id="tittle" placeholder="tittle your querie" cols="20" rows="5"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="message">Message: </label>
-            <br>
-            <textarea name="message" id="message" placeholder="explain your querie" cols="20" rows="5"></textarea>
-        </div>
-  <!-- Add data-id attribute to the publish button to store postId -->
-<button id="button" class="publish">Publish</button>
-
-
-        </form>
-    </section>
-    <% for(var i=0;i<posts.length;i++){ %>
+  <section id="compose-area">
+    <h1>COMPOSE</h1>
+    <form action="/query_page/<%=id%>" method="post">
+      <div class="form-group">
+        <label for="tittle">Title: </label>
+        <br>
+        <textarea name="tittle" id="tittle" placeholder="tittle your querie" cols="20" rows="5"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="message">Message: </label>
+        <br>
+        <textarea name="message" id="message" placeholder="explain your querie" cols="20" rows="5"></textarea>
+      </div>
+      <!-- Add data-id attribute to the publish button to store postId -->
+      <button id="button" class="publish">Publish</button>
+    </form>
+  </section>
+  <% for(var i=0;i<posts.length;i++){ %>
     <section id="queries" class="post-section" data-id="<%= posts[i]._id %>">
-        <div class="holder">
-            Published by <%= posts[i].name %> on <%= posts[i].date %>
-        </div>
-        <div class="tittle_holder"> <%= posts[i].title %> </div>
-        <p> <%= posts[i].content %> </p>
-        <div class="cont">
-            <button id="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
-            <p class="votes"> <%= posts[i].votes %> </p>
-            <button id="downvote" data-id="<%= posts[i]._id %>">&darr;</button>
-
-        </div>
+      <div class="holder">
+        Published by <%= posts[i].name %> on <%= posts[i].date %>
+      </div>
+      <div class="tittle_holder"> <%= posts[i].title %> </div>
+      <p> <%= posts[i].content %> </p>
+      <div class="cont">
+        <button class="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
+        <p class="votes"> <%= posts[i].votes %> </p>
+        <button class="downvote" data-id="<%= posts[i]._id %>">&darr;</button>
+      </div>
     </section>
-    <% } %>
+  <% } %>
 </aside>
-</body>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-   $(document).on('click', '#upvote', function() {
-  const postId = $(this).data('id');
-  $.ajax({
-    type: 'POST',
-    url: '/upvote/<%=id%>',
-    contentType: 'application/json', // Ensure server knows we're sending JSON
-    data: JSON.stringify({ postId: postId }), // Convert the JavaScript object to a JSON string
-    success: function(data) {
-     // $('.post[data-id="' + postId + '"] .votes').text(data.votes);
-     $('section[data-id="' + postId + '"] .votes').text(data.votes);
-    },
-    error: function() {
-      alert('Error upvoting post!');
-    }
-  });
-});
-$(document).on('click', '#downvote', function() {
-    const postId = $(this).data('id');
-  $.ajax({
-    type: 'POST',
-    url: '/downvote/<%=id%>',
-    contentType: 'application/json', // Ensure server knows we're sending JSON
-    data: JSON.stringify({ postId: postId }), // Convert the JavaScript object to a JSON string
-    success: function(data) {
-      $('.post[data-id="' + postId + '"] .votes').text(data.votes);
-    },
-    error: function() {
-      alert('Error downvoting post!');
-    }
-  });
-});
 
-function updateNotificationCount() {
-    $.ajax({
-        type: 'GET',
-        url: '/notification-count/<%= id %>',
-        success: function(data) {
-            $('#notificationBadge').text(data.count);
-            console.log('Notification count updated:', data.count);
-            addResolvedQueryToDropdownMenu(); 
-        },
-        error: function() {
-            console.error('Error fetching notification count');
-        }
-    });
-}
-function updateNotificationCount2() {
-    $.ajax({
-        type: 'GET',
-        url: '/notification-count/<%= id %>',
-        success: function(data) {
-            $('#notificationBadge').text(data.count);
-            console.log('Notification count updated:', data.count);
+<div class="modal" id="postModal" tabindex="-1" role="dialog">
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+
+        <button type="button" class="btn btn-primary" id="yesbutton">YES</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="nobutton">NO</button>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <% notifications.forEach(notification => { %>
+          <% const postId = notification.postId; %>
+          <% if (postId) { %>
+            <% const post = posts.find(post => post._id.toString() === postId.toString()); %>
+            <% if (post) { %>
+              <p><%= post.content %></p>
+            <% } %>
+          <% } %>
+        <% }); %>
+
+
+      </div>
       
-        },
-        error: function() {
-            console.error('Error fetching notification count');
-        }
-    });
-}
+      <div class="modal-footer">
 
+      </div>
+    </div>
+  </div>
+</div>
 
-function addResolvedQueryToDropdownMenu() {
-    console.log('Adding resolved query to dropdown menu');
-    // Get the dropdown menu
-    const dropdownMenu = $('#myDropdown1');
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  function toggleDropdown(event) {
+    event.preventDefault(); // Prevent default link behavior
+    $('#myDropdown1').toggle(); // Toggle the visibility of the dropdown
+  }
+   // Event listener for clicking the "Show me" button
+// Event listener for clicking the "Show me" button
+$(document).on('click', '.showbutton', function() {
+    const postId = $(this).data('postid'); 
+    $('#yesbutton').data('postid', postId);
+    $('#postModal').modal('show');
+});
 
-    // Append a new item indicating that the admin has resolved a query
-    dropdownMenu.append('<a href="#">Admin resolved a query</a>');
-
-    // Append two icons for "Yes" and "No" options
-    dropdownMenu.append('<a href="#" class="resolve-yes"><i class="fas fa-check"></i> Yes</a>');
-    dropdownMenu.append('<a href="#" class="resolve-no"><i class="fas fa-times"></i> No</a>');
-}
-
-// Call the updateNotificationCount function initially when the page loads
-updateNotificationCount();
-$(document).on('click', '.resolve-no', function() {
-  updateNotificationCount2();
+// Event listener for clicking the "Yes" button in the modal
+$(document).on('click', '#yesbutton', function() {
+    const postId = $(this).data('postid');
     $.ajax({
         type: 'POST',
-        url: '/sendemailonno/<%= id %>',
-        success: function(data) {
-            console.log('Email sent to admin');
-            alert('An email has been sent to the admin');
-          
+        url: '/remove-notification',
+        data: { postId: postId },
+        success: function(response) {
+            console.log('Notification removed successfully:', response);
+            $(`#myDropdown1 [data-postid='${postId}']`).remove();
+            // Decrease the notification count
+            $('#notificationBadge').text(parseInt($('#notificationBadge').text()) - 1);
+            // Close the modal
+            $('#postModal').modal('hide');
         },
-        error: function() {
-            // Handle error response if needed
-            alert('Error sending email to admin');
+        error: function(xhr, status, error) {
+            // Handle error
+            console.error('Error removing notification:', error);
+            alert('Error removing notification. Please try again.');
         }
     });
 });
 
+
+  $(document).on('click', '.upvote', function() {
+    const postId = $(this).data('id');
+    $.ajax({
+      type: 'POST',
+      url: '/upvote/<%=id%>',
+      contentType: 'application/json', // Ensure server knows we're sending JSON
+      data: JSON.stringify({ postId: postId }), // Convert the JavaScript object to a JSON string
+      success: function(data) {
+        $('section[data-id="' + postId + '"] .votes').text(data.votes);
+      },
+      error: function() {
+        alert('Error upvoting post!');
+      }
+    });
+  });
+
+  $(document).on('click', '.downvote', function() {
+    const postId = $(this).data('id');
+    $.ajax({
+      type: 'POST',
+      url: '/downvote/<%=id%>',
+      contentType: 'application/json',
+      data: JSON.stringify({ postId: postId }),
+      success: function(data) {
+        $('section[data-id="' + postId + '"] .votes').text(data.votes);
+      },
+      error: function() {
+        alert('Error downvoting post!');
+      }
+    });
+  });
 </script>
 <%-include("partials/footer1")-%>

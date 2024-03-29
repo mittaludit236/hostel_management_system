@@ -38,7 +38,7 @@
     const resolveButton = $(this);
     const postId = resolveButton.closest('.card').find('input[type="checkbox"]').val();
 
-    // Change button text to "Waiting for Confirmation"
+
     resolveButton.text('Waiting for Confirmation');
     // Disable the button
     resolveButton.prop('disabled', true);
@@ -48,7 +48,7 @@
     }, 6000); // 10 minutes in milliseconds
 
     console.log("hjdjkfnsdk");
-    // Send AJAX request to mark the post as resolved
+
     $.ajax({
       type: 'POST',
       url: '/resolve-post/' + postId,
