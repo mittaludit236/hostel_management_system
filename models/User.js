@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     type: Boolean,  
     default: false,
   },
-<<<<<<< HEAD
+
   posts:[
     {
     type:mongoose.Schema.Types.ObjectId,
@@ -30,12 +30,12 @@ const userSchema = new mongoose.Schema({
     }
   ],
   
-=======
+
   count:{
     type:Number,
     default:0,
   }
->>>>>>> 92e0bddd500199bfc3f2fa0e4b2145c9a54e7afa
+
 });
 
 
