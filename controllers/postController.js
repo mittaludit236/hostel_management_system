@@ -246,7 +246,6 @@ exports.ResolveMail = async (req, res) => {
     });
   
     const post=await Post.findById(req.params.id);
-  
     const info = await transporter.sendMail({
       from: 'admin@mnnit.ac.in',
       to: userEmail,
