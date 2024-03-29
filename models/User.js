@@ -21,8 +21,12 @@ const userSchema = new mongoose.Schema({
   blocked: {
     type: Boolean,  
     default: false,
+  },
+  count:{
+    type:Number,
+    default:0,
   }
 });
 
-// Export user model
+
 module.exports = mongoose.model('User', userSchema);

@@ -8,15 +8,37 @@ const {Admin,admin}=require("../models/Admin");
 const saltRounds = 10;
 var token="";
 exports.getQueryPage = (req, res) => {
-    User.findOne({_id: req.params.id},function(err,user){
-        Post.find({},function(err,results){
-            if(err)
-            console.log(err);
-            else
-           res.render("user_page",{ posts: results ,name: user.name, email: user.email,id: req.params.id});
-         });
-    });
+  User.findOne({ _id: req.params.id }, function(err, user) {
+      if (err) {
+          console.log(err);
+          return res.status(500).send("Internal Server Error");
+      }
+
+      if (!user) {
+          return res.status(404).send("User not found");
+      }
+
+   
+      const notificationCount = user.count;
+
+      Post.find({}, function(err, results) {
+          if (err) {
+              console.log(err);
+              return res.status(500).send("Internal Server Error");
+          }
+
+          // Render the user page with posts, user details, and notification count
+          res.render("user_page", {
+              posts: results,
+              name: user.name,
+              email: user.email,
+              id: req.params.id,
+              count: notificationCount
+          });
+      });
+  });
 };
+
 exports.getPersonalQueriesPage = (req, res) => {
   User.findOne({ _id: req.params.id }, function(err, user) {
     if (err) {
@@ -146,3 +168,47 @@ exports.postResetPage = (req, res) => {
     });
 };
 
+exports.Increment = async (req, res) => {
+console.log("HEKLLLL");
+  try {
+      
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Assuming post.uid is the user ID associated with the post
+    const user = await User.findById(post.uid);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.count += 1;
+
+    await user.save();
+ 
+    return res.status(200).json({ message: "Post resolved successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+exports.getCount = async (req, res) => {
+  console.log("hello");
+  try {
+    const userId = req.params.id;
+  
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+ 
+    res.json({ count: user.count });
+  
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

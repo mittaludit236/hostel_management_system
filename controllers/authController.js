@@ -100,6 +100,9 @@ exports.postSignInPage = (req, res) => {
                       const token = getToken(req.body.username, user);
                       const uReturn = { ...user.toJSON(), token };
                       delete uReturn.password;
+                      const count = user.count;
+         
+
                       const p = "/query_page/" + user._id;
                       res.redirect(p);
                   } else {
@@ -152,7 +155,7 @@ exports.postBlockedUsers = async (req, res) => {
     // Delete posts associated with the user
     await Post.deleteMany({ uid: userId });
 
-    // Find the user by email
+  
     const user = await User.findOne({ _id: userId });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
