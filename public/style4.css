@@ -89,11 +89,6 @@ html {
     font-family: 'Gabriola', sans-serif;   
 }
 
-.compA {
-    font-size: 2rem;
-    margin: 3px 8px;
-}
-
 /* compose area css applied */
 #compose-area {
     display: flex;
@@ -240,4 +235,29 @@ height:40px;
     position: fixed;
     bottom: 0;
     left: 0;
+}
+.notification-bell {
+    position: relative;
+float:right;
+    font-size: 2rem;
+    margin: 3px 8px;
+}
+.notification-bell .bell-icon {
+    font-size: 24px; /* Adjust size as needed */
+}
+.notification-bell .dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+.notification-bell .dropdown-content {
+    padding: 10px;
+}
+.notification-bell.show .dropdown {
+    display: block;
 }

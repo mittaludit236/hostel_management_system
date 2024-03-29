@@ -6,6 +6,7 @@ const postSchema=new mongoose.Schema({
     name: { type: String },
     date: { type: String },
     uid: {type: String },
+
 });
 const Post=new mongoose.model("Post",postSchema);
 module.exports=Post;
