@@ -229,7 +229,8 @@ exports.ResolveMail = async (req, res) => {
 
   const post=await Post.findById(req.params.id);
   const user = await User.findById(post.uid);
-  
+  post.bdate=date.getDate();
+  post.save();
   const userEmail = user.email;
   try {
     const transporter = nodemailer.createTransport({

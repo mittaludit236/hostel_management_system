@@ -5,6 +5,7 @@ const User = require('../models/User');
 const Post = require('../models/Post');
 const Contact = require('../models/Contact');
 const {Admin,admin}=require("../models/Admin");
+const date=require("../utilities/date");
 const saltRounds = 10;
 var token="";
 exports.getQueryPage = (req, res) => {
@@ -73,7 +74,7 @@ exports.getAdminPage = (req, res) => {
         if(err)
         console.log(err);
         else
-       res.render("admin_page",{ posts: results ,name: admin.name, email: admin.email});
+       res.render("admin_page",{ posts: results ,name: admin.name, email: admin.email, dt: date.getDate()});
      });
 };
 exports.postContact= (req,res) =>{
