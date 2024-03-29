@@ -12,8 +12,19 @@
           <a href="/logout">Log Out</a>
       </div>
   </div>
-  <a href="#compose-area" class="compA">+</a>
-  <div class="project"><a href="/">PANACEA</a></div>
+  <div class="dropdown">
+    <a href="#" class="dropbtm" onclick="toggleDropdown(event)">&#128276;
+      <i class="fa fa-caret-down"></i>
+    </a> 
+ 
+<span class="notification-badge"><%= count %></span>
+
+
+    <div id="myDropdown1" class="dropdown-content">
+     
+    </div>
+</div>
+  <div class="project"><a href="#">PANACEA</a></div>
 </div>
 <aside id="container">
     <section id="compose-area">
@@ -92,6 +103,67 @@ $(document).on('click', '#downvote', function() {
   });
 });
 
+function updateNotificationCount() {
+    $.ajax({
+        type: 'GET',
+        url: '/notification-count/<%= id %>',
+        success: function(data) {
+            $('#notificationBadge').text(data.count);
+            console.log('Notification count updated:', data.count);
+            addResolvedQueryToDropdownMenu(); 
+        },
+        error: function() {
+            console.error('Error fetching notification count');
+        }
+    });
+}
+function updateNotificationCount2() {
+    $.ajax({
+        type: 'GET',
+        url: '/notification-count/<%= id %>',
+        success: function(data) {
+            $('#notificationBadge').text(data.count);
+            console.log('Notification count updated:', data.count);
+      
+        },
+        error: function() {
+            console.error('Error fetching notification count');
+        }
+    });
+}
+
+
+function addResolvedQueryToDropdownMenu() {
+    console.log('Adding resolved query to dropdown menu');
+    // Get the dropdown menu
+    const dropdownMenu = $('#myDropdown1');
+
+    // Append a new item indicating that the admin has resolved a query
+    dropdownMenu.append('<a href="#">Admin resolved a query</a>');
+
+    // Append two icons for "Yes" and "No" options
+    dropdownMenu.append('<a href="#" class="resolve-yes"><i class="fas fa-check"></i> Yes</a>');
+    dropdownMenu.append('<a href="#" class="resolve-no"><i class="fas fa-times"></i> No</a>');
+}
+
+// Call the updateNotificationCount function initially when the page loads
+updateNotificationCount();
+$(document).on('click', '.resolve-no', function() {
+  updateNotificationCount2();
+    $.ajax({
+        type: 'POST',
+        url: '/sendemailonno/<%= id %>',
+        success: function(data) {
+            console.log('Email sent to admin');
+            alert('An email has been sent to the admin');
+          
+        },
+        error: function() {
+            // Handle error response if needed
+            alert('Error sending email to admin');
+        }
+    });
+});
 
 </script>
 <%-include("partials/footer1")-%>

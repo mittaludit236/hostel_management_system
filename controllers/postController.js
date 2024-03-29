@@ -232,6 +232,11 @@ exports.postEdit=async(req,res)=>{
 exports.ResolveMail = async (req, res) => {
 
 
+  const post=await Post.findById(req.params.id);
+  const user = await User.findById(post.uid);
+  post.bdate=date.getDate();
+  post.save();
+  const userEmail = user.email;
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -247,16 +252,15 @@ exports.ResolveMail = async (req, res) => {
     });
   
     const post=await Post.findById(req.params.id);
-  
     const info = await transporter.sendMail({
       from: 'admin@mnnit.ac.in',
-      to: 'pandeysujal591@gmail.com',
+      to: userEmail,
       subject: "Query Status Update",
       html: `
       <div style="font-family: Arial, sans-serif; color: #333;">
         <h2>Query Status Notification</h2>
         <p>The query posted by <strong>${post.name}</strong> on <strong>${post.date}</strong> has been resolved.</p>
-        <p>Please click the button below to view the details of your query and validate from your side.</p>
+        <p>Please click the button below to view the details of your query and validate from your side .</p>
         <a href="http://localhost:3000/signin_admin" style="display: inline-block; background-color: #007bff; color: #ffffff; padding: 10px 20px; font-size: 16px; text-decoration: none; border-radius: 5px; margin-top: 20px;">Login to View Query</a>
       </div>
       `
@@ -282,3 +286,71 @@ exports.postEdit=async(req,res)=>{
     res.redirect(u);
 }
 
+exports.deletePostResolved= async(req,res) =>{
+  try {
+    // Find the post by ID and delete it
+    await Post.findByIdAndDelete(req.params.postId);
+    
+    // Decrement the notification count
+    // Assuming you have a function to decrement the count
+    await decrementNotificationCount(req.user.id); // Adjust this as per your actual implementation
+    
+    res.status(200).json({ message: "Post deleted successfully" });
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+}
+};
+
+exports.sendEmailToAdmin = async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    // Find the user by ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Update the usercount
+    user.usercount = 0;
+
+    // Save the updated user object
+    await user.save();
+
+    // Send email to admin
+    const userEmail = user.email;
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.SERVER_MAIL,
+        pass: process.env.NODE_M,
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+
+    const info = await transporter.sendMail({
+      from: userEmail,
+      to: 'admin@mnnit.ac.in',
+      subject: "Query Status Update",
+      html: `
+        <div style="font-family: Arial, sans-serif; color: #333;">
+          <h2>Query Status Notification</h2>
+          <p>The query posted by <strong>${user.name}</strong> on <strong>${user.date}</strong> has been resolved.</p>
+          <p>Please click the button below to view the details of your query and validate from your side.</p>
+          <a href="http://localhost:3000/signin_admin" style="display: inline-block; background-color: #007bff; color: #ffffff; padding: 10px 20px; font-size: 16px; text-decoration: none; border-radius: 5px; margin-top: 20px;">Login to View Query</a>
+        </div>
+      `
+    });
+
+    console.log("Info:", info);
+    res.status(200).json({ success: true, message: 'Reminder email sent successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Error sending reminder email' });
+  }
+};

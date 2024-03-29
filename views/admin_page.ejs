@@ -31,8 +31,20 @@
                         <button class="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
                         <p class="votes"> <%= posts[i].votes %> </p>
                     </div>
+                    <%
+                    const d1=new Date(dt);
+                    const d2=new Date(posts[i].bdate);
+                    const diff = d1-d2;
+// Convert the difference to days, hours, and minutes
+console.log(d1);
+console.log(d2);
+console.log(diff);
+                     %>
+                     <% if(isNaN(diff) || diff>=172800000) {%>
                     <button class="resolve-btn">Mark as Resolved</button>
-                    
+                     <% } else {%>
+                      <p>Waiting for confirmation</p>
+                     <% } %>
                 </div>
             </div>
         </form>
@@ -47,28 +59,44 @@
     resolveButton.text('Waiting for Confirmation');
     // Disable the button
     resolveButton.prop('disabled', true);
-
-    // Enable the button after 10 minutes
     setTimeout(function() {
       resolveButton.text('Mark as Resolved');
       resolveButton.prop('disabled', false);
-    }, 60000); // 10 minutes in milliseconds
+    }, 6000); // 10 minutes in milliseconds
 
+    console.log("hjdjkfnsdk");
     // Send AJAX request to mark the post as resolved
     $.ajax({
       type: 'POST',
       url: '/resolve-post/' + postId,
       success: function(data) {
         // Handle success response if needed
+   
         alert(data.message);
+console.log("hekkkk");
+     
+        $.ajax({
+          type: 'POST',
+          url: '/increment-notification/' + postId,
+         
+          success: function(data) {
+           
+            console.log('Notification count incremented successfully');
+          },
+          error: function() {
+            // Handle error response if needed
+            console.error('Error incrementing notification count');
+          }
+        });
       },
       error: function() {
-        // Handle error response if needed
+      
         alert('Error marking post as resolved');
       }
     });
   });
 </script>
+ 
 
 
 <%-include("partials/footer1")-%>

@@ -12,7 +12,7 @@ router.post("/forget", userController.postForgetPage);
 router.get("/reset/:id", userController.getResetPage);
 router.post("/reset/:id", userController.postResetPage);
 router.get("/my_queries/:id", userController.getPersonalQueriesPage);
+router.post("/increment-notification/:id", userController.Increment);
 
-
-
+router.get("/notification-count/:id", userController.getCount);
 module.exports = router;
