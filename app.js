@@ -30,7 +30,7 @@ const posts=[];
 var postId;
 var userId;
 const Schema = mongoose.Schema;
-//const MongoStore = require('connect-mongo');
+// const MongoStore = require('connect-mongo');
 app.set('view engine', 'ejs'); //setting the view engine to ejs
 require("./middleware/session");
 //server database connection string linking

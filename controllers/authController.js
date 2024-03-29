@@ -112,7 +112,7 @@ exports.postSignInPage = (req, res) => {
               res.render("failure", { message: "You have not yet Signed Up", sign: "In", url: "/signin_student" });
           }
       }
-  });
+  }).populate("posts"); //populate function to include post information in user schema when he loges in
 };
 
 exports.postSignInAPage = (req, res) => {

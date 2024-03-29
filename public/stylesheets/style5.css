@@ -2,7 +2,7 @@
 body {
     margin: 0; /* Reset default margin */
     padding: 0; /* Reset default padding */
-    background-image: url("background2.jpg");
+    background-image: url("../images/background2.jpg");
     background-size: cover; /* Ensure the background image covers the entire body */
     background-repeat: 3; /* Prevent the background image from repeating */
     background-position: center; /* Center the background image */
@@ -33,7 +33,11 @@ body {
 }
 
 
+
+
 /* Other CSS rules for navbar, cards, and footer remain the same */
+
+
 
 
 .block1 {
@@ -102,12 +106,24 @@ img {
 /* CSS applied over the card/container section */
 
 .card {
-    width: 400px;
+    min-height:200px;
+    min-width: 400px;
     margin: 20px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
+}
+
+.post-image{
+    background-color: white;
+    display:inline;
+    max-width:50%;
+    max-height:100%; 
+    overflow:hidden;
+  width: auto; 
+  height: auto;
+    object-fit:cover;
 }
 
 .card-body {

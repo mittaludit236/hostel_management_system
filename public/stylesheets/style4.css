@@ -128,13 +128,13 @@ label {
 }
 
 #tittle {
-    width: 561px;
-    height: 75px;
+    width: 560px;
+    height: 35px;
 }
 
 #message {
-    width: 588px;
-    height: 144px;
+    width: 590px;
+    height: 135px;
 }
 
 #button {
@@ -161,7 +161,7 @@ textarea {
 #queries {
     
     width: 600px;
-    height: 270px;
+    min-height: 270px;
     padding: 10px 30px 30px 30px;
     margin-bottom:25px;
     border-radius: 15px;
@@ -208,6 +208,16 @@ textarea {
 #queries div {
     margin: 10px 15px;
     padding: 0px 8px;
+}
+
+.post-image{
+    display:inline;
+    max-width:50%;
+    max-height:100%; 
+    overflow:hidden;
+  width: auto; 
+  height: auto;
+    object-fit:cover;
 }
 
 #queries p {

@@ -6,48 +6,46 @@
 .container {
     padding: 45px 75px 75px 75px;
     position: absolute;
-    top: 230px;
+    top: 190px;
 
 }
 
 .box {
     display: flex;
     flex-direction: column;
-    border-radius: 20px;
-
-    background-color: rgb(229 224 224 / 42%);
+    border: 2px solid black;
     height: 429px;
     width: 440px;
     justify-content: center;
     align-items: center;
     margin: 70px 550px;
-    box-shadow: 42px 30px 20px 4px rgb(10, 10, 10);
+    background-color: rgb(255 255 255 / 18%);
+    box-shadow: 20px 15px 13px 7px;
+    border-radius: 20px;
 }
 
 .image {
     position: absolute;
-    top: 80px;
+    top: 70px;
     width: 80px;
     height: 80px;
-    /* border: 2px solid purple; */
-}
-.image img{
-    border-radius: 10px;
+    border: 2px solid purple;
+
 }
 
 p {
-    font-size: 3rem;
+    font-size: 2rem;
     position: absolute;
     top: 180px;
-
+    font-family: 'Gabriola', sans-serif;
+    ;
 
 }
 
-.form-group {
-    margin: 5px;
+h1 {
+    top: 150px;
+    position: absolute;
 }
-
-
 
 .checkbox {
     font-size: 1.3rem;
@@ -61,6 +59,7 @@ p {
 }
 
 .button {
+
     font-size: 1.3rem;
     width: 184px;
     height: 33px;
@@ -85,13 +84,13 @@ div input {
 }
 
 body {
-    background-image: url("admin_bg.jpg");
+    background-image: url("../images/cherry.avif");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: inherit;
     height: 100%;
     width: 100%;
     z-index: -1;
-    background-repeat: no-repeat;
-    background-attachment: inherit;
-    background-position: center center;
 }
 button:hover{
     cursor: pointer;
