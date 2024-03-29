@@ -11,7 +11,7 @@ router.post("/delete",postController.delete);
 router.post("/send_reminder/:id",postController.sendReminder);
 
 router.post("/resolve-post/:id", postController.ResolveMail);
-router.get('/posts/:postId/:userId',postController.getEditPost);
+router.get('/posts/:postId',postController.getEditPost);
 router.post('/posts/edit/:postId/:userId',postController.postEdit);
 router.post("/sendemailonno/:id", postController.sendEmailToAdmin);
 

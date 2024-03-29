@@ -4,9 +4,9 @@ const postSchema=new mongoose.Schema({
     content: { type: String },
     votes: { type: Number },
     name: { type: String },
-    date: { type: String },
+    date: { type: Date },
     uid: {type: String },
-
+    bdate: {type: Date},
 });
 const Post=new mongoose.model("Post",postSchema);
 module.exports=Post;

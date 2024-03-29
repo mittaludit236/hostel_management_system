@@ -1,9 +1,10 @@
-exports.getDate=function()
-{
-   var options={
-    weekday: "long",
-    day: "numeric",
-    month: "long"
-   };
-   return new Date().toLocaleDateString("en-US",options);
+exports.getDate = function() {
+   // Create a new Date object
+   const now = new Date();
+
+   // Convert to UTC and format as an ISO string
+   const isoString = now.toISOString();
+
+   // Return the ISO string
+   return isoString;
 };
