@@ -21,7 +21,14 @@ const userSchema = new mongoose.Schema({
   blocked: {
     type: Boolean,  
     default: false,
-  }
+  },
+  posts:[
+    {
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Post"
+    }
+  ],
+  
 });
 
 // Export user model

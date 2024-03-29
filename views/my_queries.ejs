@@ -24,6 +24,11 @@
               <a href="#" class="send-reminder">Send a Reminder</a>
           </div>
       </div>
+      <div class="post-image">
+        <% if(posts[i].image){ %>
+        <img   src="/images/uploads/<%=posts[i].image %>" alt="">
+        <% }%>  
+      </div>
       <div class="holder">
           Published by <%= posts[i].name %> on <%= posts[i].date %>
       </div>

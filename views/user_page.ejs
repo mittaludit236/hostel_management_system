@@ -18,7 +18,8 @@
 <aside id="container">
     <section id="compose-area">
         <h1>COMPOSE</h1>
-        <form action="/query_page/<%=id%>" method="post">
+        <form action="/query_page/<%=id%>" method="post" enctype="multipart/form-data">
+        <input type="file" name="image">
         <div class="form-group">
             <label for="tittle">Title: </label>
             <br>
@@ -27,7 +28,7 @@
         <div class="form-group">
             <label for="message">Message: </label>
             <br>
-            <textarea name="message" id="message" placeholder="explain your querie" cols="20" rows="5"></textarea>
+            <textarea name="message" id="message" placeholder="explain your querie" cols="5" rows="1"></textarea>
         </div>
   <!-- Add data-id attribute to the publish button to store postId -->
 <button id="button" class="publish">Publish</button>
@@ -37,6 +38,11 @@
     </section>
     <% for(var i=0;i<posts.length;i++){ %>
     <section id="queries" class="post-section" data-id="<%= posts[i]._id %>">
+        <div class="post-image">
+          <% if(posts[i].image){ %>
+          <img   src="/images/uploads/<%=posts[i].image %>" alt="">
+          <% }%>  
+        </div>
         <div class="holder">
             Published by <%= posts[i].name %> on <%= posts[i].date %>
         </div>

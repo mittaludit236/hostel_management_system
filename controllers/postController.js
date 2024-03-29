@@ -7,7 +7,7 @@ exports.postQueryPage=(req,res)=>{
 
   console.log("hello");
   
-    User.findOne({_id: req.params.id},function(err,user){
+    User.findOne({_id: req.params.id}, async function(err,user){
         if(err)
         console.log(err);
         else if(!user)
@@ -17,15 +17,20 @@ exports.postQueryPage=(req,res)=>{
     
           //saving post to database 
           const post=new Post({
+            user:user._id, //this is the user id given to post schema for post to remember which user posted this post
             title: req.body.tittle,
             content: req.body.message,
             votes: 0,
             name: user.name,
             date: date.getDate(),
             uid: req.params.id,
+            image:req.file.filename //image given the file uploaded
         });
-        post.save();
+        user.posts.push(post._id);
+       
         try {
+          await  post.save();
+           await user.save();
           const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,

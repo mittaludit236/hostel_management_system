@@ -33,7 +33,11 @@ body {
 }
 
 
+
+
 /* Other CSS rules for navbar, cards, and footer remain the same */
+
+
 
 
 .block1 {
@@ -102,12 +106,24 @@ img {
 /* CSS applied over the card/container section */
 
 .card {
-    width: 400px;
+    min-height:200px;
+    min-width: 400px;
     margin: 20px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
+}
+
+.post-image{
+    background-color: white;
+    display:inline;
+    max-width:50%;
+    max-height:100%; 
+    overflow:hidden;
+  width: auto; 
+  height: auto;
+    object-fit:cover;
 }
 
 .card-body {

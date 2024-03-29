@@ -13,7 +13,13 @@ const userSchema = new mongoose.Schema({
     },
     id:{
       type: String,
-    }
+    },
+    posts:[
+      {
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Post"
+      }
+    ],
   });
 const User=new mongoose.model("User",userSchema);
 module.exports=User;

@@ -16,10 +16,15 @@
 <div id="container">
     <% for(var i=0; i<posts.length; i++) { %>
         <form action="/delete" method="post">
-            <div class="card" style="width:400px">
+            <div class="card" style="min-width:400px">
                 <input type="checkbox" name="checkbox" value="<%= posts[i]._id %>" onChange="this.form.submit()">
                 Published by <%= posts[i].name %> on <%= posts[i].date %>
-                <div class="card-body">
+                <div class="card-body ">
+                  <div class="post-image">
+                    <% if(posts[i].image){ %>
+                    <img   src="/images/uploads/<%=posts[i].image %>" alt="">
+                    <% }%>  
+                  </div>
                     <h4 class="card-title"><%= posts[i].title %></h4>
                     <p class="card-text"> <%= posts[i].content %></p>
                     <div class="cont"> 
