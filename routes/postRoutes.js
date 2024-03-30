@@ -12,7 +12,8 @@ router.post("/send_reminder/:id",postController.sendReminder);
 
 router.post("/resolve-post/:id", postController.ResolveMail);
 router.get('/posts/:postId/',postController.getEditPost);
-router.post('/posts/edit/:postId/',postController.postEdit);
-
-
+router.post('/posts/edit/:postId/:userId',postController.postEdit);
+router.get("/get_post_content/:id",postController.getPM);
+router.post("/yes/:id",postController.postYes);
+router.post("/no/:id",postController.postNo);
 module.exports=router;
