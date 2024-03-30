@@ -61,79 +61,96 @@
     </section>
   <% } %>
 </aside>
-
 <div class="modal" id="postModal" tabindex="-1" role="dialog">
-
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-
-        <button type="button" class="btn btn-primary" id="yesbutton">YES</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="nobutton">NO</button>
+        <h5 class="modal-title">Modal Title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <% notifications.forEach(notification => { %>
-          <% const postId = notification.postId; %>
-          <% if (postId) { %>
-            <% const post = posts.find(post => post._id.toString() === postId.toString()); %>
-            <% if (post) { %>
-              <p><%= post.content %></p>
-            <% } %>
-          <% } %>
-        <% }); %>
-
-
+        <!-- This is where the post content will be inserted -->
+        <p id="modalContent">Some content...</p>
       </div>
-      
       <div class="modal-footer">
-
+        <button type="button" class="btn btn-primary" id="yesbutton">YES</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="nobutton">NO</button>
       </div>
     </div>
   </div>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('.showbutton').click(function() {
+        var postId = $(this).data('postid');
+       
+        // Example AJAX request to fetch post content
+        $.ajax({
+          url: '/get_post_content/' + postId, // Adjust as needed
+          type: 'GET',
+          success: function(response) {
+            // Assuming 'response' contains the post content
+            $('#postModal .modal-body').html(`<p>${response.content}</p>`);
+            $('#yesbutton, #nobutton').attr('data-lid', postId);
+            $('#postModal').modal('show'); // Using Bootstrap's modal functionality
+          },
+          error: function() {
+            alert('Failed to fetch post content');
+          }
+        });
+      });
+    
+      // Use event delegation for handling clicks on dynamically set attributes
+      $('#postModal').on('click', '#yesbutton', function() {
+        var postId = $(this).attr('data-lid');
+        console.log("YES clicked for postId: " + postId);
+        $.ajax({
+            url: '/yes/'+postId,
+            type: 'POST',
+            success: function(response) {
+              window.location.reload();
+            },
+            error: function() {
+                alert('Failed to fetch post content');
+            }
+        });
+        // Implement YES button functionality here
+      });
+    
+      $('#postModal').on('click', '#nobutton', function() {
+        var postId = $(this).attr('data-lid');
+        console.log("NO clicked for postId: " + postId);
+        // Implement NO button functionality here
+        $.ajax({
+            url: '/no/'+postId,
+            type: 'POST',
+            success: function(response) {
+              window.location.reload();
+            },
+            error: function() {
+                alert('Failed to fetch post content');
+            }
+        });
+      });
+      
+      // Close the modal by clicking outside of it, if not using Bootstrap
+      $(window).click(function(event) {
+        if (event.target.id == 'postModal') {
+          $('#postModal').modal('hide'); // For Bootstrap
+        }
+      });
+    });
+    </script>
+    
 <script>
   function toggleDropdown(event) {
     event.preventDefault(); // Prevent default link behavior
     $('#myDropdown1').toggle(); // Toggle the visibility of the dropdown
   }
-   // Event listener for clicking the "Show me" button
-// Event listener for clicking the "Show me" button
-$(document).on('click', '.showbutton', function() {
-    const postId = $(this).data('postid'); 
-    $('#yesbutton').data('postid', postId);
-    $('#postModal').modal('show');
-});
-
-// Event listener for clicking the "Yes" button in the modal
-$(document).on('click', '#yesbutton', function() {
-    const postId = $(this).data('postid');
-    $.ajax({
-        type: 'POST',
-        url: '/remove-notification',
-        data: { postId: postId },
-        success: function(response) {
-            console.log('Notification removed successfully:', response);
-            $(`#myDropdown1 [data-postid='${postId}']`).remove();
-            // Decrease the notification count
-            $('#notificationBadge').text(parseInt($('#notificationBadge').text()) - 1);
-            // Close the modal
-            $('#postModal').modal('hide');
-        },
-        error: function(xhr, status, error) {
-            // Handle error
-            console.error('Error removing notification:', error);
-            alert('Error removing notification. Please try again.');
-        }
-    });
-});
-
-
   $(document).on('click', '.upvote', function() {
     const postId = $(this).data('id');
     $.ajax({
@@ -143,6 +160,7 @@ $(document).on('click', '#yesbutton', function() {
       data: JSON.stringify({ postId: postId }), // Convert the JavaScript object to a JSON string
       success: function(data) {
         $('section[data-id="' + postId + '"] .votes').text(data.votes);
+        window.location.reload();
       },
       error: function() {
         alert('Error upvoting post!');
@@ -159,6 +177,7 @@ $(document).on('click', '#yesbutton', function() {
       data: JSON.stringify({ postId: postId }),
       success: function(data) {
         $('section[data-id="' + postId + '"] .votes').text(data.votes);
+        window.location.reload();
       },
       error: function() {
         alert('Error downvoting post!');

@@ -20,11 +20,6 @@
                 <input type="checkbox" name="checkbox" value="<%= posts[i]._id %>" onChange="this.form.submit()">
                 Published by <%= posts[i].name %> on <%= posts[i].date %>
                 <div class="card-body ">
-                  <div class="post-image">
-                    <% if(posts[i].image){ %>
-                    <img   src="/images/uploads/<%=posts[i].image %>" alt="">
-                    <% }%>  
-                  </div>
                     <h4 class="card-title"><%= posts[i].title %></h4>
                     <p class="card-text"> <%= posts[i].content %></p>
                     <div class="cont"> 
@@ -40,7 +35,7 @@ console.log(d1);
 console.log(d2);
 console.log(diff);
                      %>
-                     <% if(isNaN(diff) || diff>=172800000) {%>
+                     <% if(isNaN(diff) || diff>=0) {%>
                     <button class="resolve-btn">Mark as Resolved</button>
                      <% } else {%>
                       <p>Waiting for confirmation</p>

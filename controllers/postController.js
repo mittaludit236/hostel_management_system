@@ -24,9 +24,8 @@ exports.postQueryPage=(req,res)=>{
             name: user.name,
             date: date.getDate(),
             uid: req.params.id,
-            image:req.file.filename //image given the file uploaded
+            //image:req.file.filename //image given the file uploaded
         });
-        user.posts.push(post._id);
        
         try {
           await  post.save();
@@ -234,7 +233,8 @@ exports.ResolveMail = async (req, res) => {
     const userEmail = user.email;
     const postId = req.params.id;
 
-
+    post.bdate=date.getDate();
+    post.save();
 
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });
@@ -354,4 +354,60 @@ exports.sendEmailToAdmin = async (req, res) => {
     res.status(500).json({ success: false, message: 'Error sending reminder email' });
   }
 };
-
+exports.getPM=async(req,res)=>{
+  console.log("dfaugk");
+  const post=await Post.findById(req.params.id);
+  if (post) {
+    // If a matching post is found, send back the post content
+    res.json({ success: true, content: post.content });
+} else {
+    // If no matching post is found, send an error message
+    res.status(404).json({ success: false, message: 'Post not found' });
+}
+}
+exports.postYes=async(req,res)=>{
+  try {
+    console.log(req.params.id + "YES");
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(404).json({ success: false, message: "Post not found" });
+    }
+    const user = await User.findById(post.uid);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    await User.updateOne(
+      { _id: post.uid },
+      { $pull: { notifications: { postId: req.params.id } } }
+    );
+    await Post.findByIdAndRemove(req.params.id);
+    res.json({ success: true, content: post.content });
+  } catch (err) {
+    console.error("Error in postYes:", err);
+    res.status(500).json({ success: false, message: "An error occurred" });
+  }
+}
+exports.postNo=async(req,res)=>{
+  console.log(req.params.id+"NO");
+  try {
+    console.log(req.params.id + "YES");
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(404).json({ success: false, message: "Post not found" });
+    }
+    const user = await User.findById(post.uid);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    await User.updateOne(
+      { _id: post.uid },
+      { $pull: { notifications: { postId: req.params.id } } }
+    );
+    post.bdate=undefined;
+    await post.save();
+    res.json({ success: true, content: post.content });
+  } catch (err) {
+    console.error("Error in postYes:", err);
+    res.status(500).json({ success: false, message: "An error occurred" });
+  }
+}
