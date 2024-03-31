@@ -88,9 +88,9 @@
       $('.showbutton').click(function() {
         var postId = $(this).data('postid');
        
-        // Example AJAX request to fetch post content
+     
         $.ajax({
-          url: '/get_post_content/' + postId, // Adjust as needed
+          url: '/get_post_content/' + postId,
           type: 'GET',
           success: function(response) {
             // Assuming 'response' contains the post content
