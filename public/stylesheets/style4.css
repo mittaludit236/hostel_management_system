@@ -9,11 +9,11 @@ html {
 
 /* navbar css applied */
 .navbar {
-
+    float: right;
     background-color: #636627ba;
-
+    text-align: center;
     position: fixed;
-    width: 99%;
+    width: 100%;
     height: 72px;
 }
 
@@ -29,7 +29,9 @@ html {
 .dropdown {
     float: right;
     position: relative;
+  /* Adjust margin as needed */
 }
+
 
 .dropdown .dropbtn {
     font-size: 1.6rem;
@@ -79,14 +81,26 @@ html {
 .dropbtn {
     float: right;
 }
+.notification-badge {
+    background-color: black;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%); /* Center badge */
+    font-size: 1.2rem;
+}
 
 .project {
     color: white;
     font-size: 1.6rem;
-    display: inline-block;
-    margin: 4px 40px;
+
+    margin: 4px 10px; /* Adjust margin as needed */
     padding: 0px 20px;
     font-family: 'Gabriola', sans-serif;   
+    float: left; /* Float PANACEA to the left */
 }
 
 /* compose area css applied */
@@ -247,10 +261,12 @@ height:40px;
     left: 0;
 }
 .notification-bell {
-    position: relative;
-float:right;
-    font-size: 2rem;
-    margin: 3px 8px;
+   
+position:relative;
+        float: right; 
+        font-size: 2rem;
+        margin: 3px 8px;
+    
 }
 .notification-bell .bell-icon {
     font-size: 24px; /* Adjust size as needed */

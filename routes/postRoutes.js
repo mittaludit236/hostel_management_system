@@ -16,4 +16,5 @@ router.post('/posts/edit/:postId/:userId',postController.postEdit);
 router.get("/get_post_content/:id",postController.getPM);
 router.post("/yes/:id",postController.postYes);
 router.post("/no/:id",postController.postNo);
+router.post("/delete-post/:id", postController.DeletePost);
 module.exports=router;

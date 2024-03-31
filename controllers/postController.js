@@ -303,57 +303,7 @@ exports.postEdit=async(req,res)=>{
 
 
 
-exports.sendEmailToAdmin = async (req, res) => {
-  const userId = req.params.id;
 
-  try {
-    // Find the user by ID
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ success: false, message: 'User not found' });
-    }
-
-
-
-    // Save the updated user object
-    await user.save();
-
-    // Send email to admin
-    const userEmail = user.email;
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.SERVER_MAIL,
-        pass: process.env.NODE_M,
-      },
-      tls: {
-        rejectUnauthorized: false
-      }
-    });
-
-    const info = await transporter.sendMail({
-      from: userEmail,
-      to: 'admin@mnnit.ac.in',
-      subject: "Query Status Update",
-      html: `
-        <div style="font-family: Arial, sans-serif; color: #333;">
-          <h2>Query Status Notification</h2>
-          <p>The query posted by <strong>${user.name}</strong> on <strong>${user.date}</strong> has been resolved.</p>
-          <p>Please click the button below to view the details of your query and validate from your side.</p>
-          <a href="http://localhost:3000/signin_admin" style="display: inline-block; background-color: #007bff; color: #ffffff; padding: 10px 20px; font-size: 16px; text-decoration: none; border-radius: 5px; margin-top: 20px;">Login to View Query</a>
-        </div>
-      `
-    });
-
-    console.log("Info:", info);
-    res.status(200).json({ success: true, message: 'Reminder email sent successfully' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: 'Error sending reminder email' });
-  }
-};
 exports.getPM=async(req,res)=>{
   console.log("dfaugk");
   const post=await Post.findById(req.params.id);
@@ -387,8 +337,10 @@ exports.postYes=async(req,res)=>{
     res.status(500).json({ success: false, message: "An error occurred" });
   }
 }
-exports.postNo=async(req,res)=>{
-  console.log(req.params.id+"NO");
+
+
+exports.postNo = async (req, res) => {
+  console.log(req.params.id + "NO");
   try {
     console.log(req.params.id + "YES");
     const post = await Post.findById(req.params.id);
@@ -403,11 +355,60 @@ exports.postNo=async(req,res)=>{
       { _id: post.uid },
       { $pull: { notifications: { postId: req.params.id } } }
     );
-    post.bdate=undefined;
+    post.bdate = undefined;
     await post.save();
-    res.json({ success: true, content: post.content });
+
+    const userEmail = user.email;
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.SERVER_MAIL,
+        pass: process.env.NODE_M,
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+
+    const info = await transporter.sendMail({
+      from: userEmail,
+      to: 'pandeysujal591@gmail.com',
+      subject: "Query Status Update",
+      html: `
+        <div style="font-family: Arial, sans-serif; color: #333;">
+          <h2>Query Status Notification</h2>
+          <p>The query posted by <strong>${user.name}</strong> on <strong>${user.date}</strong> has  not been resolved.</p>
+          <p>Please check admin and re-validate</p>
+          <a href="http://localhost:3000/signin_admin" style="display: inline-block; background-color: #007bff; color: #ffffff; padding: 10px 20px; font-size: 16px; text-decoration: none; border-radius: 5px; margin-top: 20px;">Login to View Query</a>
+        </div>
+      `
+    });
+
+    console.log("Info:", info);
+    res.status(200).json({ success: true, message: 'Reminder email sent successfully to admin' });
   } catch (err) {
-    console.error("Error in postYes:", err);
-    res.status(500).json({ success: false, message: "An error occurred" });
+    console.error("Error in postNo:", err);
+    res.status(500).json({ success: false, message: 'Error sending reminder email' });
   }
-}
+};
+exports.DeletePost = async (req, res) => {
+  const postId = req.params.postId;
+
+  try {
+    // Find the post by ID
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found.' });
+    }
+
+    // Delete the post
+    await Post.findByIdAndDelete(postId);
+   
+    res.status(200).json({ message: 'Post deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    res.status(500).json({ error: 'An error occurred while deleting the post.' });
+  }
+};
