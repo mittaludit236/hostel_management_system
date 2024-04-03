@@ -57,6 +57,7 @@ app.use(session({
   cookie: {
     maxAge: 3600000 // 1 hour in milliseconds
   },
+
   store: MongoStore.create({ mongoUrl: "mongodb+srv://mittaludit768:" + process.env.MONGO_P + "@hostelmanagement.iky6mce.mongodb.net/?retryWrites=true&w=majority&appName=HostelManagement" })
 }));
 const sessionStore = MongoStore.create({ mongoUrl: "mongodb+srv://mittaludit768:" + process.env.MONGO_P + "@hostelmanagement.iky6mce.mongodb.net/?retryWrites=true&w=majority&appName=HostelManagement" });
@@ -65,11 +66,31 @@ app.use('/', require('./routes/authRoutes'));
 app.use('/', require('./routes/userRoutes'));
 
 
+app.delete('/delete-post/:postId', async (req, res) => {
+  const postId = req.params.postId;
 
+  try {
+      // Find the post by ID
+      const post = await Post.findById(postId);
+      if (!post) {
+          return res.status(404).json({ error: 'Post not found.' });
+      }
+
+      // Delete the post
+      await Post.findByIdAndDelete(postId);
+     
+      res.status(200).json({ message: 'Post deleted successfully.' });
+  } catch (error) {
+   
+      console.error('Error deleting post:', error);
+      // Send response with error message
+      res.status(500).json({ error: 'An error occurred while deleting the post.' });
+  }
+});
 
 const PORT=process.env.PORT||4000;
 app.use('/', require('./routes/postRoutes'));
-app.listen(PORT, function() { 
+app.listen(3000, function() { 
 
   console.log("Server started on port 3000");
 });

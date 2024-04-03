@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
   notifications: [{
-  
     postId: {
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'Post' 
