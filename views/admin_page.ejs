@@ -7,7 +7,7 @@
   
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/users"><span class="glyphicon glyphicon-user"></span> users</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=name%></a></li>
+        <li><a href="/notice_page"><span class="glyphicon glyphicon-user"></span> notice</a></li>
         <li><a href="/signin_admin"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
       </ul>
     </div>
@@ -20,6 +20,11 @@
                 <input type="checkbox" name="checkbox" value="<%= posts[i]._id %>" onChange="this.form.submit()">
                 Published by <%= posts[i].name %> on <%= posts[i].date %>
                 <div class="card-body ">
+                  <div class="post-image" >
+                    <% if(posts[i].image){ %>
+                    <img   src="/images/uploads/<%=posts[i].image %>" alt="" width="100%" height="50%">
+                    <% }%>  
+                  </div>               
                     <h4 class="card-title"><%= posts[i].title %></h4>
                     <p class="card-text"> <%= posts[i].content %></p>
                     <div class="cont"> 

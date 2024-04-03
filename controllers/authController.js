@@ -51,6 +51,10 @@ exports.logout = (req, res) => {
         res.redirect("/");
       });
 };
+exports.getNoticePage=(req,res)=>{
+res.send("this is the notice page");
+}
+
 exports.postSignUpPage = (req, res) => {
     const email=req.body.email;
     User.findOne({ email: email },function(err,user){ //for checking if user already signed up with this email
@@ -112,7 +116,7 @@ exports.postSignInPage = (req, res) => {
               res.render("failure", { message: "You have not yet Signed Up", sign: "In", url: "/signin_student" });
           }
       }
-  }); //populate function to include post information in user schema when he loges in
+  }).populate("posts"); //populate function to include post information in user schema when he loges in
 };
 
 exports.postSignInAPage = (req, res) => {
