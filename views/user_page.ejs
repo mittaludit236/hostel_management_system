@@ -58,6 +58,7 @@
         <p class="votes"> <%= posts[i].votes %> </p>
         <button class="downvote" data-id="<%= posts[i]._id %>">&darr;</button>
       </div>
+      <button class="commentsbtn" data-id="<%=posts[i]._id %>"><span class="mdi--comments"></span> Comments</button>
     </section>
   <% } %>
 </aside>
@@ -71,12 +72,40 @@
         </button>
       </div>
       <div class="modal-body">
-        <!-- This is where the post content will be inserted -->
+     
         <p id="modalContent">Some content...</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="yesbutton">YES</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="nobutton">NO</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="commentsmodal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Comments Section</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="commentInput">Add a Comment:</label>
+          <textarea class="form-control" id="commentInput" rows="3"></textarea>
+          <button type="button" class="btn btn-primary" id="submitComment">Submit</button>
+        </div>
+        <hr>
+        <h6>All Comments:</h6>
+        <ul class="list-group" id="allComments">
+       
+        </ul>
+      </div>
+      <div class="modal-footer">
+  
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeComments">Close</button>
       </div>
     </div>
   </div>
@@ -88,9 +117,9 @@
       $('.showbutton').click(function() {
         var postId = $(this).data('postid');
        
-     
+    
         $.ajax({
-          url: '/get_post_content/' + postId,
+          url: '/get_post_content/' + postId, 
           type: 'GET',
           success: function(response) {
             // Assuming 'response' contains the post content
@@ -137,15 +166,69 @@
         });
       });
       
-      // Close the modal by clicking outside of it, if not using Bootstrap
+   
       $(window).click(function(event) {
         if (event.target.id == 'postModal') {
-          $('#postModal').modal('hide'); // For Bootstrap
+          $('#postModal').modal('hide');
         }
       });
     });
     </script>
-    
+<script>
+  $(document).ready(function() {
+    $('.commentsbtn').click(function() {
+      var postId = $(this).data('id');
+      $.ajax({
+        url: '/get_comments/' + postId, 
+        type: 'GET',
+        success: function(response) {
+          if (response.success) {
+             var comments = response.comments;
+             var modalContent = '';
+             comments.forEach(function(comment) {
+              modalContent += '<li class="list-group-item">' +
+                                '<strong>' + comment.userN + '</strong> - ' +
+                                comment.content + ' - ' + // Comment text
+                                comment.date + // Date created (assuming 'date' is the field name)
+                                '</li>';
+             }); 
+             $('#commentsmodal .modal-body #allComments').html(modalContent);
+            $('#submitComment').attr('data-lid', postId);
+            $('#commentsmodal').modal('show');
+          } else {
+            alert(response.message);
+          }
+        },
+        error: function() {
+          alert('Failed to fetch comments');
+        }
+      });
+    });
+
+    $('#submitComment').click(function() {
+      var postId = $(this).attr('data-lid');
+      var commentText = $('#commentInput').val();
+
+      $.ajax({
+        url: '/add_comment/' + postId,
+        type: 'POST',
+        data: { text: commentText },
+        success: function(response) {
+          $('#commentInput').val('');
+          window.location.reload();
+        },
+        error: function() {
+          alert('Failed to add comment');
+        }
+      });
+    });
+
+    $('#closeComments').click(function() {
+      $('#commentInput').val('');
+      $('#commentsmodal').modal('hide');
+    });
+  });
+</script>
 <script>
   function toggleDropdown(event) {
     event.preventDefault(); // Prevent default link behavior
