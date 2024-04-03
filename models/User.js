@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema({
     type: Boolean,  
     default: false,
   },
+  posts:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Post"
+  }
+  ],
   notifications: [{
     postId: {
       type: mongoose.Schema.Types.ObjectId, 

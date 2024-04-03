@@ -168,8 +168,8 @@ html {
     max-width:50%;
     max-height:100%; 
     overflow:hidden;
-  width: auto; 
-  height: auto;
+  /* width: auto; 
+  height: auto; */
     object-fit:cover;
 }
 

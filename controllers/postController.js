@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Post = require('../models/Post');
 const Vote = require('../models/Vote');
 const date=require("../utilities/date.js");
+
 exports.postQueryPage=(req,res)=>{
 
   console.log("hello");
@@ -24,9 +25,9 @@ exports.postQueryPage=(req,res)=>{
             name: user.name,
             date: date.getDate(),
             uid: req.params.id,
-            //image:req.file.filename //image given the file uploaded
+            image:req.file.filename //image given the file uploaded
         });
-       
+        user.posts.push(post._id);
         try {
           await  post.save();
            await user.save();
