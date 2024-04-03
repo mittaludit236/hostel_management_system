@@ -17,5 +17,8 @@ router.post('/posts/edit/:postId/:userId',postController.postEdit);
 router.get("/get_post_content/:id",postController.getPM);
 router.post("/yes/:id",postController.postYes);
 router.post("/no/:id",postController.postNo);
-router.post("/delete-post/:id", postController.DeletePost);
+router.get("/get_comments/:id",postController.getComments);
+
+router.post("/add_comment/:id",postController.Comment);
+
 module.exports=router;

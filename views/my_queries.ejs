@@ -38,7 +38,10 @@
           <button id="upvote" data-id="<%= posts[i]._id %>">&uarr;</button>
           <p class="votes"> <%= posts[i].votes %> </p>
           <button id="downvote" data-id="<%= posts[i]._id %>">&darr;</button>
+
+
       </div>
+      <button class="commentsbtn" data-id="<%=posts[i]._id %>"><span class="mdi--comments"></span> Comments</button>
   </section>
 <% } %>
 </aside>
@@ -48,7 +51,35 @@
   <button type="submit">Save Changes</button>
 </form>
 </body>
+
+<div class="modal" id="commentsmodal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Comments Section</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+        
+        <hr>
+        <h6>All Comments:</h6>
+        <ul class="list-group" id="allComments">
+       
+        </ul>
+      </div>
+      <div class="modal-footer">
+  
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeComments">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
    $(document).on('click', '#upvote', function() {
   const postId = $(this).data('id');
@@ -126,4 +157,43 @@ $('.edit-btn').click(function() {
         });
 });
 </script>
+<script>
+  $(document).ready(function() {
+     $('.commentsbtn').click(function(event) {
+         event.preventDefault(); // Prevent the default form submission behavior
+         var postId = $(this).data('id');
+         $.ajax({
+             url: '/get_comments/' + postId,
+             type: 'GET',
+             success: function(response) {
+                 if (response.success) {
+                     var comments = response.comments;
+                     var modalContent = '';
+                     comments.forEach(function(comment) {
+                         modalContent += '<li class="list-group-item">' +
+                             '<strong>' + comment.userN + '</strong> - ' +
+                             comment.content + ' - ' +
+                             comment.date +
+                             '</li>';
+                     });
+                     $('#commentsmodal .modal-body #allComments').html(modalContent);
+ 
+                     $('#commentsmodal').modal('show');
+                 } else {
+                     alert(response.message);
+                 }
+             },
+             error: function() {
+                 alert('Failed to fetch comments');
+             }
+         });
+     });
+ 
+     $('#closeComments').click(function() {
+         $('#commentInput').val('');
+         $('#commentsmodal').modal('hide');
+     });
+ });
+ 
+ </script>
 <%-include("partials/footer1")-%>
