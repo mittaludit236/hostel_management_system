@@ -1,0 +1,46 @@
+<%-include("partials/announcementhead")-%>
+<nav class="navbar navbar-inverse my-0 " >
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand"  href="/">Panacea</a>
+      </div>
+  
+     
+    </div>
+</nav> 
+
+<div class="app min-h-screen font-sans bg-zinc-600 min-h-screen pt-8 p-4">
+    
+    <h3 class="text-indigo-lightest text-center  mt-0 heading mb-8">Announcements:</h3>
+    <hr class="border-b border-white w-[40%] mx-auto mt-3 mb-10">
+    
+    <div class="content flex flex-col justify-self-start items-start">
+      <% let c=0%>
+    
+      <div class="news  rounded-md bg-zinc-800 w-full flex items-center px-5 py-5">
+        <span class="bg-green-dark text-white tracking-wide text-l w-auto m-2 inline-block rounded-full py-1 px-2"><%= c+=1 %></span>
+        <span class="txt w-2/3 sm:w-full text-white text-md text-indigo-lightest">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maxime optio ut, quas nam ducimus quisquam laudantium repellendus autem, rerum id, fuga veniam molestiae aliquam non.</span>
+      </div>
+    
+      
+      <hr class="border-b border-white  my-5">
+      
+      <div class="news  rounded-md bg-zinc-800  flex items-center px-5 py-5">
+        <span class="bg-green-dark text-white tracking-wide text-l w-auto m-2 inline-block rounded-full py-1 px-2"><%= c+=1 %></span>
+        <span class="txt w-2/3 sm:w-full text-white text-md text-indigo-lightest">Big news ipsum dolor sit amet consectetur</span>
+      </div>
+      
+       
+      <hr class="border-b border-white  my-5">
+      
+      <div class="news bg-zinc-800 text-white flex items-center   rounded-md px-5 py-5">
+        <span class="bg-green-dark tracking-wide text-l w-auto m-1 inline-block rounded-full py-1 px-2"><%= c+=1 %></span>
+        <span class="txt w-2/3 sm:w-full text-md text-indigo-lightest">Small News ipsum dolor sit amet consectetur</span>
+      </div>
+      
+      
+    </div>
+    
+  </div>
+
+<%-include("partials/footer")-%>

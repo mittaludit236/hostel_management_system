@@ -227,10 +227,11 @@ exports.postEdit=async(req,res)=>{
 
 
 exports.ResolveMail = async (req, res) => {
+ 
   try {
     const post = await Post.findById(req.params.id);
     const user = await User.findById(post.uid);
-  
+   console.log(post);
     const userEmail = user.email;
     const postId = req.params.id;
 
@@ -268,7 +269,7 @@ exports.ResolveMail = async (req, res) => {
 
     const info = await transporter.sendMail({
       from: 'admin@mnnit.ac.in',
-      to: userEmail,
+      to: 'anuraggolu123@gmail.com',
       subject: "Query Status Update",
       html: `
         <div style="font-family: Arial, sans-serif; color: #333;">

@@ -28,6 +28,11 @@ exports.getFEPage = (req, res) => {
 exports.getFPPage = (req, res) => {
     res.render("failure",{ message: "Sorry Password and Confirm Password does not match",sign: "Up",url: "/signup"});
 };
+
+exports.getAnnouncementPage=(req,res)=>{
+  res.render("announcement");
+
+}
 // authController.js
 
 exports.googleAuth = passport.authenticate('google', { scope: ['profile', 'email'] });
@@ -52,7 +57,7 @@ exports.logout = (req, res) => {
       });
 };
 exports.getNoticePage=(req,res)=>{
-res.send("this is the notice page");
+res.render("notice");
 }
 
 exports.postSignUpPage = (req, res) => {

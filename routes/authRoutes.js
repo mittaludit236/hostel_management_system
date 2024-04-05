@@ -4,6 +4,8 @@ const {requireAuthenticate,requireAuthenticate1}=require("../middleware/authenti
 const router = express.Router();
 router.get('/', authController.getHomePage);
 router.get("/signup",authController.getSignUpPage);
+router.get("/announcement",authController.getAnnouncementPage);
+
 router.get("/signin_admin",authController.getSignInaPage);
 router.get("/signin_student",authController.getSignInPage);
 router.get("/success",authController.getSuccessPage);

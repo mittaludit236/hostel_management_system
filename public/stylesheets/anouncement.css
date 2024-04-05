@@ -1,0 +1,40 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-size: 3rem;
+   
+}
+
+
+.content{
+    max-width: 100%;
+  }
+  .news span.txt{
+    
+    min-width:40%;
+    
+  }
+  
+  .heading{
+      font-size:5rem;
+  }
+
+  .navbar{
+    border-radius: 0px;
+    height:70px;
+    
+  }
+
+  .navbar-brande{
+    font-size:2rem;
+  }
+
+
+  .footer {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 50px;
+    font-size: 2rem;
+}

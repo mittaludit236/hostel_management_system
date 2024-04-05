@@ -1,0 +1,40 @@
+<%-include("partials/noticeheader")-%>
+<nav class="navbar mb-0 navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand size" href="/">Panacea</a>
+      </div>
+  
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/users"><span class="glyphicon glyphicon-user size"></span> users</a></li>
+
+        <li><a href="/notice_page"><span class="glyphicon glyphicon-user size"></span> notice</a></li>
+        <li><a href="/signin_admin"><span class="glyphicon glyphicon-log-out size"></span> Logout</a></li>
+
+      </ul>
+    </div>
+  </nav>
+
+   <div class="middle bg-zinc-600 w-full h-screen flex justify-center ">
+  
+    <section id="compose-area">
+      <h1 class="cmp">COMPOSE</h1>
+      <form action="" method="post" >
+        
+        <div class="form-group">
+          <label for="tittle">Title: </label>
+          <br>
+          <textarea name="tittle" id="tittle" placeholder="tittle your querie" cols="20" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="message">Message: </label>
+          <br>
+          <textarea name="message" id="message" placeholder="explain your querie" cols="20" rows="5"></textarea>
+        </div>
+        <!-- Add data-id attribute to the publish button to store postId -->
+        <button id="button" class="publish">Publish</button>
+      </form>
+    </section>
+
+</div>
+<%-include("partials/footer1")-%>
