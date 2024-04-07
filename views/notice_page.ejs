@@ -1,0 +1,81 @@
+<%-include("partials/noticeheader")-%>
+  <nav class="navbar mb-0 navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand size" href="/">Panacea</a>
+      </div>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/users"><span class="glyphicon glyphicon-user size"></span> users</a></li>
+        <li><a href="/admin_page"><span class="glyphicon glyphicon-user size">admin</span> </a></li>
+        <li><a href="/notice_page"><span class="glyphicon  size"></span> notice</a></li>
+        <li><a href="/signin_admin"><span class="glyphicon glyphicon-log-out size"></span> Logout</a></li>
+
+      </ul>
+    </div>
+  </nav>
+
+  <div class="middle bg-zinc-600 w-full min-h-screen flex  flex-col justify-center ">
+
+    <div class="mx-auto">
+      <section id="compose-area">
+        <h1 class="cmp">NOTICE </h1>
+        <form action="/create_notice" method="post">
+
+          <div class="form-group">
+
+            <div class="form-group">
+              <label for="message">Message: </label>
+              <br>
+              <textarea name="message" id="message" placeholder="explain your querie" cols="20" rows="5"></textarea>
+            </div>
+            <!-- Add data-id attribute to the publish button to store postId -->
+            <button id="button" class="publish">Publish</button>
+        </form>
+      </section>
+    </div>
+
+    <div class="content flex flex-col justify-self-start my-5 items-start">
+      <% let c=0%>
+        <% for(let i=0;i<notices.length; i++){ %>
+          <div class="news  rounded-md bg-zinc-800  flex items-center px-5 py-5">
+            <span class="bg-green-dark text-white tracking-wide text-l w-auto m-2 inline-block rounded-full py-1 px-2">
+              <%= c+=1 %>
+            </span>
+            <span class="txt w-2/3 sm:w-full text-white text-md text-indigo-lightest">
+              <%=notices[i].content %>
+                <button id="delete-btn" class=" bg-red-500 text-white px-3 py-1 rounded-md" data-id="<%= notices[i]._id %>">Delete</button>
+            </span>
+          </div>
+          <hr class="border-b border-white  my-5">
+          <% } %>
+    </div>
+
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+ 
+
+  $(document).on('click', '#delete-btn', function() {
+    const noticeId = $(this).data('id');
+    $.ajax({
+      type: 'DELETE',
+      url: '/delete-notice/'+ noticeId,
+      contentType: 'application/json',
+      data: JSON.stringify({ noticeId: noticeId }),
+      success: function(data) {
+        // $('section[data-id="' + noticeId + '"] .votes');
+       
+        $(`.content[data-id="${noticeId}"]`).remove();
+        window.location.reload();
+       
+        
+      },
+      error: function() {
+        alert('Error deleting notice!');
+      }
+    });
+  });
+  </script>
+
+  <%-include("partials/footer1")-%>

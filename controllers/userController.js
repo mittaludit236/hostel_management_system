@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const User = require('../models/User');
 const Post = require('../models/Post');
+const Notice = require('../models/Notice')
 const Contact = require('../models/Contact');
 const {Admin,admin}=require("../models/Admin");
 const date=require("../utilities/date");
@@ -78,6 +79,26 @@ exports.getAdminPage = (req, res) => {
        res.render("admin_page",{ posts: results ,name: admin.name, email: admin.email, dt: date.getDate()});
      });
 };
+
+exports.getNoticePage=(req,res)=>{
+  Notice.find({},function(err,results){
+    if(err)
+    console.log(err);
+    else
+    res.render("notice_page",{notices:results});
+  });
+  };
+
+  exports.getAnnouncementPage=(req,res)=>{
+    Notice.find({},function(err,results){
+      if(err)
+      console.log(err);
+      else
+      res.render("announcement",{notices:results});
+    });
+ 
+  }
+
 exports.postContact= (req,res) =>{
     const newContact=new Contact({
         name: req.body.name,

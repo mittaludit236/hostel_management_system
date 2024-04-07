@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const User = require('../models/User');
 const Post = require('../models/Post');
+const Notice =require('../models/Notice')
 const Vote = require('../models/Vote');
 const date=require("../utilities/date.js");
 
@@ -16,7 +17,7 @@ exports.postQueryPage=(req,res)=>{
         else
         {
     
-  
+         
           const post=new Post({
             user:user._id, //this is the user id given to post schema for post to remember which user posted this post
             title: req.body.tittle,
@@ -25,7 +26,8 @@ exports.postQueryPage=(req,res)=>{
             name: user.name,
             date: date.getDate(),
             uid: req.params.id,
-            image:req.file.filename //image given the file uploaded
+            image: req.file ? req.file.filename : undefined ,
+            //image given the file uploaded
         });
         user.posts.push(post._id);
         try {
@@ -170,6 +172,66 @@ exports.delete=(req,res)=>{
 
 }
 
+exports.createNotice = async (req, res) => {
+  try {
+      const newNotice = new Notice({
+          content: req.body.message,
+          createdAt: new Date()
+      });
+
+      const savedNotice = await newNotice.save(); // Wait for the save operation to complete
+
+      console.log('Notice saved successfully:', savedNotice);
+      res.redirect("/notice_page");
+      
+  } catch (error) {
+      console.error('Error saving Notice:', error);
+      // Handle the error accordingly, e.g., send an error response
+      res.status(500).send('Error saving Notice');
+  }
+};
+
+exports.deleteNotice=  (req,res)=>{
+ 
+//     const noticeId=req.params.id;
+    
+//     console.log(noticeId);
+//    try{ 
+//     await Notice.findByIdAndDelete(noticeId,  (err, notice) => {
+//       if (err) {
+//         console.error(err);
+//         res.sendStatus(500);
+//       }
+//       else
+//       res.json({ success: true, noticeId: noticeId });
+//     });
+
+//    }catch (error) {
+//     console.error('Error deleting notice:', error);
+//     res.status(500).json({ error: 'Error deleting notice' });
+// }
+
+const noticeId = req.params.id;
+    
+console.log(noticeId);
+
+Notice.findByIdAndDelete(noticeId, (err, notice) => {
+    if (err) {
+        console.error('Error deleting notice:', err);
+        return res.sendStatus(500);
+    }
+
+    if (!notice) {
+        console.log('Notice not found');
+        return res.status(404).json({ error: 'Notice not found' });
+    }
+
+    console.log('Notice deleted successfully:', noticeId);
+    res.json({ success: true });
+});
+};
+
+   
 
 
 exports.sendReminder = async (req, res) => {

@@ -1,13 +1,21 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const Post = require('../models/Post');
+const Notice =require("../models/Notice");
 const {Admin,admin}=require("../models/Admin");
 const { getToken } = require('../utilities/help');
 const passport = require('passport');
 const saltRounds = 10;
 const invalidateUserSessions=require("../middleware/session");
 exports.getHomePage = (req, res) => {
-    res.render("home");
+  Notice.find({},function(err,results){
+    if(err)
+    console.log(err);
+    else
+    
+    res.render("home",{notices:results});
+  });
+   
   };
 exports.getSignUpPage = (req, res) => {
     res.render("signup");
@@ -29,10 +37,7 @@ exports.getFPPage = (req, res) => {
     res.render("failure",{ message: "Sorry Password and Confirm Password does not match",sign: "Up",url: "/signup"});
 };
 
-exports.getAnnouncementPage=(req,res)=>{
-  res.render("announcement");
 
-}
 // authController.js
 
 exports.googleAuth = passport.authenticate('google', { scope: ['profile', 'email'] });
@@ -56,9 +61,7 @@ exports.logout = (req, res) => {
         res.redirect("/");
       });
 };
-exports.getNoticePage=(req,res)=>{
-res.render("notice");
-}
+
 
 exports.postSignUpPage = (req, res) => {
     const email=req.body.email;

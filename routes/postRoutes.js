@@ -8,6 +8,9 @@ router.post("/upvote/:id",postController.upvote);
 router.post("/downvote/:id",postController.downvote);
 router.post("/delete",postController.delete);
 
+router.post("/create_notice",postController.createNotice);
+
+
 
 router.post("/send_reminder/:id",postController.sendReminder);
 
@@ -18,6 +21,7 @@ router.get("/get_post_content/:id",postController.getPM);
 router.post("/yes/:id",postController.postYes);
 router.post("/no/:id",postController.postNo);
 router.get("/get_comments/:id",postController.getComments);
+router.delete("/delete-notice/:id",postController.deleteNotice);
 
 router.post("/add_comment/:id",postController.Comment);
 

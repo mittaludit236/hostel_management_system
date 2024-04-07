@@ -21,7 +21,7 @@
  #compose-area {
     display: flex;
     flex-direction: column;
-    height: 430px;
+    height: 400px;
     width: 600px;
     margin: 100px 0px 30px 0px;
     padding: 30px;
@@ -78,11 +78,12 @@ textarea {
     color:white;
 }
 
+
   .footer {
     display: flex;
     background-color: #636627ba;
     color: white;
-    height: 50px;
+    height: 30px;
     width: 100%;
     padding: 5px 0px;
     align-items: center;

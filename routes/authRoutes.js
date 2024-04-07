@@ -4,7 +4,7 @@ const {requireAuthenticate,requireAuthenticate1}=require("../middleware/authenti
 const router = express.Router();
 router.get('/', authController.getHomePage);
 router.get("/signup",authController.getSignUpPage);
-router.get("/announcement",authController.getAnnouncementPage);
+
 
 router.get("/signin_admin",authController.getSignInaPage);
 router.get("/signin_student",authController.getSignInPage);
@@ -21,7 +21,7 @@ router.post("/signup",authController.postSignUpPage);
 router.post("/signin_student",authController.postSignInPage);
 router.post("/signin_admin",authController.postSignInAPage);
 router.get('/users', requireAuthenticate1,authController.getBlockedUsers);
-router.get('/notice_page',requireAuthenticate1,authController.getNoticePage);
+
 router.post('/block_user',authController.postBlockedUsers);
 
 // Define other routes...

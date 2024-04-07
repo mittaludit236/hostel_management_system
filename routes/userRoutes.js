@@ -6,6 +6,8 @@ const router = express.Router();
 // Existing routes
 router.get("/query_page/:id", requireAuthenticate, userController.getQueryPage);
 router.get("/admin_page", requireAuthenticate1, userController.getAdminPage);
+router.get('/notice_page',requireAuthenticate1,userController.getNoticePage);
+router.get("/announcement",userController.getAnnouncementPage);
 router.post("/", userController.postContact);
 router.get("/forget", userController.getForgetPage);
 router.post("/forget", userController.postForgetPage);

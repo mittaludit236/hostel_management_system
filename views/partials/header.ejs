@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MNNIT|SVBH OFFICIAL</title>
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@0.7.4/dist/tailwind.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet">
     <nav id="navbar">
@@ -15,11 +17,16 @@
         </div>
         <ul>
             <li class="item"><a href="#home">Home</a></li>
-            <li class="item"><a href="/announcement">announcement</a></li>
+            <li class="item relative ">
+                <span w-inherit h-inherit absolute left-0 top-0 rounded-full flex items-center justify-center bg-zinc-200>
+                    <i class="text-white"><%=notices.length %></i>
+                </span>
+                <a href="/announcement">announcement</a>
+            </li>
             <li class="item"><a href="#contact">Contact Us</a></li>
         </ul>
         <div id="side">
-            <input type="text" placeholder="type to search" id="search">
+           
             <button id="signUp" onclick="window.location.href='/signup'">Sign Up</button>
 
         </div>
